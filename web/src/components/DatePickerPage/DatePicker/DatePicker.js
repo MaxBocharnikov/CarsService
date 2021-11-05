@@ -2,39 +2,14 @@ import React from 'react';
 import { Calendar, Badge } from 'antd';
 import S from './DatePicker.styled';
 
-function getListData(value) {
-    let listData;
-    switch (value.date()) {
-        case 8:
-            listData = [
-                { type: 'warning', content: 'This is warning event.' },
-                { type: 'success', content: 'This is usual event.' },
-            ];
-            break;
-        case 10:
-            listData = [
-                { type: 'warning', content: 'This is warning event.' },
-                { type: 'success', content: 'This is usual event.' },
-                { type: 'error', content: 'This is error event.' },
-            ];
-            break;
-        case 15:
-            listData = [
-                { type: 'warning', content: 'This is warning event' },
-                { type: 'success', content: 'This is very long usual event。。....' },
-                { type: 'error', content: 'This is error event 1.' },
-                { type: 'error', content: 'This is error event 2.' },
-                { type: 'error', content: 'This is error event 3.' },
-                { type: 'error', content: 'This is error event 4.' },
-            ];
-            break;
-        default:
-    }
-    return listData || [];
+function getListData(value, items) {
+    return items.filter(item => {
+        return item.start.isSame(value, 'day')
+    }).map(i => ({type: 'success', content: i.title}));
 }
 
-function dateCellRender(value) {
-    const listData = getListData(value);
+function dateCellRender(value, items) {
+    const listData = getListData(value, items);
     return (
         <S.BadgeWrapper className="events">
             {listData.map(item => (
@@ -47,7 +22,7 @@ function dateCellRender(value) {
 }
 
 
-const DatePicker = ({setSelectedDate}) => {
+const DatePicker = ({setSelectedDate, items}) => {
 
     const onDateChange = (date) => {
         date.set({hour: 12, minute: 0, second: 0, millisecond: 0});
@@ -56,7 +31,7 @@ const DatePicker = ({setSelectedDate}) => {
 
     return (
         <Calendar
-            dateCellRender={dateCellRender}
+            dateCellRender={value => dateCellRender(value, items)}
             onSelect={onDateChange}
         />
     )
