@@ -31,8 +31,8 @@ const TimeLinePicker = ({
         const updated = items.map(item =>
             item.id === itemId
                 ? Object.assign({}, item, {
-                    start: dragTime,
-                    end: dragTime + (item.end - item.start),
+                    start: moment(dragTime),
+                    end: moment(dragTime) + (item.end - item.start),
                     group: group.id
                 })
                 : item
