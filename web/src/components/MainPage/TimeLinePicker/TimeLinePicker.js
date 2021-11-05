@@ -45,8 +45,8 @@ const TimeLinePicker = ({
         const updated = items.map(item =>
             item.id === itemId
                 ? Object.assign({}, item, {
-                    start: edge === "left" ? time : item.start,
-                    end: edge === "left" ? item.end : time
+                    start: edge === "left" ? moment(time) : item.start,
+                    end: edge === "left" ? item.end : moment(time)
                 })
                 : item
         );
