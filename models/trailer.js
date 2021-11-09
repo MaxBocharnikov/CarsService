@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+const {model} = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
-const trailerSchema = new Schema({
+const trailerSchema = new BaseSchema({
     model: {type: String, required: true},
     stateNumber: {type: String},
     mileage: {type: String},

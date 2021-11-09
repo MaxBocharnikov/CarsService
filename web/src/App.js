@@ -1,9 +1,17 @@
-import React, {useState} from 'react';
+import React, {useCallback} from 'react';
+import {useDispatch} from 'react-redux';
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
 import moment from 'moment';
 import { Layout } from 'antd';
+
 import 'antd/dist/antd.css';
-import DatePickerPage from './pages/DatePickerPage/DatePickerPage';
 import MainPage from './pages/MainPage/MainPage';
+import {setSelectedDate} from './store/applications';
+import Header from './components/Header/Header';
 
 const initialGroups = [
     { id: 1, title: 'Пост 1' },
@@ -44,28 +52,21 @@ const initialItems = [
 ];
 
 const App = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [groups, setGroups] = useState(initialGroups);
-  const [items, setItems] = useState(initialItems);
+  const dispatch = useDispatch();
 
+  const onChangeDate = useCallback((newDate) => {
+      dispatch(setSelectedDate(newDate));
+  }, [dispatch]);
+
+  console.log(initialItems);
   return (
       <Layout>
-           {selectedDate ? (
-               <MainPage
-                   selectedDate={selectedDate}
-                   setSelectedDate={setSelectedDate}
-                   groups={groups}
-                   setGroups={setGroups}
-                   items={items}
-                   setItems={setItems}
-               />
-           ) : (
-               <DatePickerPage
-                   selectedDate={selectedDate}
-                   setSelectedDate={setSelectedDate}
-                   items={items}
-               />
-           )}
+          <Header onChangeDate={onChangeDate} />
+          <Router>
+              <Routes>
+                  <Route path="/" element={<MainPage />} />
+              </Routes>
+          </Router>
       </Layout>
   )
 }

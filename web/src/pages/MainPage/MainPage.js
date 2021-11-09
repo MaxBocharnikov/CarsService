@@ -1,36 +1,40 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import { Layout } from 'antd';
-import Header from '../../components/MainPage/Header/Header';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
+import {fetchApplicationsByDate, setApplicationsList} from '../../store/applications';
+import {fetchPosts} from '../../store/posts';
 
-const MainPage = ({
-   selectedDate,
-   setSelectedDate,
-   groups,
-   items,
-   setGroups,
-   setItems,
-}) => {
+const MainPage = () => {
+    const dispatch = useDispatch();
+
+    const selectedDate = useSelector(state => state.applications.selectedDate);
+    const applications = useSelector(state => state.applications.applicationsList);
+    const posts = useSelector(state => state.posts.postsList);
+
     const { Content } = Layout;
 
-    const onChangeDate = useCallback((newDate) => {
-        setSelectedDate(newDate);
-    }, []);
+    const setApplications = useCallback((newItems) => {
+        dispatch(setApplicationsList(newItems));
+    }, [dispatch]);
 
+    useEffect(() => {
+        const startDate = selectedDate.startOf('day').format('YYYY.MM.DD, HH:mm:ss');
+        const endDate = selectedDate.endOf('day').format('YYYY.MM.DD, HH:mm:ss');
+        dispatch(fetchPosts());
+        dispatch(fetchApplicationsByDate(startDate, endDate));
+    }, [dispatch, selectedDate]);
+
+    if (!applications.length || !posts.length) return null;
     return (
-        <>
-         <Header onChangeDate={onChangeDate} />
          <Content>
              <TimeLinePicker
                  selectedDate={selectedDate}
-                 groups={groups}
-                 setGroups={setGroups}
-                 items={items}
-                 setItems={setItems}
-             />
+                 groups={posts}
+                 items={applications}
+                 setItems={setApplications}
              />
          </Content>
-        </>
     )
 };
 

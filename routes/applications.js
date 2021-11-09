@@ -6,7 +6,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     try {
         const applications = await Application.find();
-        res.status(200).json({applications});
+        res.status(200).json(applications);
     } catch(e) {
         console.log(e);
     res.status(500).json({
@@ -21,6 +21,8 @@ router.get('/:id', async (req, res) => {
             .findById(req.params.id)
             .populate('clientId')
             .populate('trailersIds')
+            .populate('workingHourId')
+            .populate('postId')
             .populate('worksIds')
             .populate('partsIds')
             .exec();
@@ -33,17 +35,54 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/getByDate', async (req, res) => {
+    try {
+        const { startDate, endDate } = req.body;
+        const applications = await Application.find({
+            "startDate": { $gte: startDate },
+            "endDate": { $lte: endDate },
+        }, {
+            _id: 1,
+            clientId: 1,
+            startDate: 1,
+            endDate: 1,
+            postId: 1,
+        }).populate("clientId").populate("postId");
+        res.status(200).json(applications);
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
 router.post('/',  async (req, res) => {
-    const { applicationNumber, clientId, trailersIds, worksIds, partsIds} = req.body;
+    const {
+        clientId,
+        trailersIds,
+        contactInfo,
+        workingHourId,
+        description,
+        postId,
+        startDate,
+        endDate,
+        worksIds,
+        partsIds,
+    } = req.body;
 
     const application = new Application({
-        applicationNumber: applicationNumber,
-        clientId: Types.ObjectId(clientId),
+        clientId: clientId,
         trailersIds: trailersIds,
+        contactInfo: contactInfo,
+        workingHourId: workingHourId,
+        description: description,
+        postId: postId,
+        startDate: startDate,
+        endDate: endDate,
         worksIds: worksIds,
         partsIds: partsIds,
-        dateCreated: new Date().toISOString(),
-        dateModified: new Date().toISOString(),
+        dateCreated: new Date().toLocaleString()
     });
 
     try {
@@ -64,7 +103,6 @@ router.put('/', async (req, res) => {
             res.status(400).json({message: 'Application not found'});
             return;
         }
-        console.log(application);
         delete req.body._id;
         Object.assign(application, req.body);
         await application.save();

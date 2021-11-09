@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 
@@ -23,8 +23,7 @@ const TimeLinePicker = ({
   selectedDate,
   groups,
   items,
-  setGroups,
-  setItems,
+  setItems
 }) => {
     const handleItemMove = (itemId, dragTime, newGroupOrder) => {
         const group = groups[newGroupOrder];
@@ -65,6 +64,14 @@ const TimeLinePicker = ({
         setItems([...items, newItem]);
     };
 
+    const onTimeChange = (visibleTimeStart, visibleTimeEnd, updateScrollCanvas) => {
+        // console.log(visibleTimeStart)
+        // console.log(visibleTimeEnd);
+        updateScrollCanvas(visibleTimeStart, visibleTimeEnd);
+    };
+
+    console.log(groups);
+    console.log(items);
     return (
         <S._TimeLinePicker
             keys={keys}
@@ -77,6 +84,7 @@ const TimeLinePicker = ({
             fullUpdate
             stackItems
             onCanvasContextMenu={handleCanvasContextMenu}
+            onTimeChange={onTimeChange}
         />
     )
 };

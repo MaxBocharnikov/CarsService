@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+const { model} = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
-const partSchema = new Schema({
+const partSchema = new BaseSchema({
     number: {type: String, required: true},
     name: {type: String, required: true},
     isReplacement: {type: Boolean},

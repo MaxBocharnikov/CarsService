@@ -8,6 +8,8 @@ const clientTypesRouter = require('./routes/clientTypes');
 const trailersRouter = require('./routes/trailers');
 const worksRouter = require('./routes/works');
 const partsRouter = require('./routes/parts');
+const postsRouter = require('./routes/posts');
+const workingHoursRouter = require('./routes/workingHours');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,6 +32,8 @@ app.use('/clientTypes', clientTypesRouter);
 app.use('/trailers', trailersRouter);
 app.use('/works', worksRouter);
 app.use('/parts', partsRouter);
+app.use('/posts', postsRouter);
+app.use('/workingHours', workingHoursRouter);
 
 async function start() {
     try {

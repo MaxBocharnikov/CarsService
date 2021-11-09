@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon server.js",
+    "client": "npm run start --prefix web",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   "homepage": "https://github.com/MaxBocharnikov/CarsService#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^6.3.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.11"
   },

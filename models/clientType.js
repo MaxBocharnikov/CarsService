@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+const {model} = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
-const clientTypeSchema = new Schema({
+const clientTypeSchema = new BaseSchema({
     type: {type: String},
 });
 

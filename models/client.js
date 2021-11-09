@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+const {model} = require('mongoose');
+const BaseSchema = require('./baseSchema');
 
-const clientSchema = new Schema({
+const clientSchema = new BaseSchema({
     name: {type: String, required: true},
     inn: {type: String},
     kpp: {type: String},
