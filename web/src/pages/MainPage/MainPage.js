@@ -3,10 +3,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import { Layout } from 'antd';
 import moment from 'moment';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
-import {fetchApplicationsByDate, setApplicationsList, setSelectedDate} from '../../store/applications';
+import {
+    fetchApplicationsByDate, setApplicationsList, setSelectedDate,
+    updateApplication
+} from '../../store/applications';
 import {fetchPosts} from '../../store/posts';
 import CalendarComponent from '../../components/MainPage/Calendar/Calendar';
 import S from './MainPage.styled';
+import {mapFromApplicationToTimeLineApplication} from '../../utils/mapping/applications';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -19,9 +23,15 @@ const MainPage = () => {
 
     const { Content } = Layout;
 
-    const setApplications = useCallback((newItems) => {
-        dispatch(setApplicationsList(newItems));
-    }, [dispatch]);
+    const onApplicationChange = useCallback((newItem) => {
+        const newApplications = applications.map(a => {
+            return newItem.id === a.id
+                ? newItem
+                :  a
+        });
+        dispatch(setApplicationsList(newApplications)); //to update locally in a moment
+        dispatch(updateApplication(newItem)); //to update on server
+    }, [dispatch, JSON.stringify(applications)]);
 
     const onChangeDate = useCallback((newDate) => {
         dispatch(setSelectedDate(newDate.startOf('day').format('YYYY.MM.DD, HH:mm:ss')));
@@ -34,10 +44,8 @@ const MainPage = () => {
     };
 
     useEffect(() => {
-        const startDate = moment(selectedDate).startOf('day').subtract(1, 'days').format('YYYY.MM.DD, HH:mm:ss');
-        const endDate = moment(selectedDate).endOf('day').add('2', 'days').format('YYYY.MM.DD, HH:mm:ss');
         dispatch(fetchPosts());
-        dispatch(fetchApplicationsByDate(startDate, endDate));
+        dispatch(fetchApplicationsByDate());
     }, [dispatch, selectedDate]);
 
     if (!posts.length) return null;
@@ -56,8 +64,9 @@ const MainPage = () => {
              <TimeLinePicker
                  selectedDate={selectedDate}
                  groups={posts}
-                 items={applications}
-                 setItems={setApplications}
+                 applications={applications}
+                 items={applications.map(mapFromApplicationToTimeLineApplication)}
+                 setItems={onApplicationChange}
                  onChangeDate={onChangeDate}
                  selectedCalendarDate={selectedCalendarDate}
              />

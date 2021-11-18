@@ -22,7 +22,6 @@ router.get('/:id', async (req, res) => {
             .populate('clientId')
             .populate('trailersIds')
             .populate('workingHourId')
-            .populate('postId')
             .populate('worksIds')
             .populate('partsIds')
             .exec();
@@ -47,7 +46,7 @@ router.post('/getByDate', async (req, res) => {
             startDate: 1,
             endDate: 1,
             postId: 1,
-        }).populate("clientId").populate("postId");
+        }).populate("clientId")
         res.status(200).json(applications);
     } catch(e) {
         console.log(e);
@@ -98,7 +97,7 @@ router.post('/',  async (req, res) => {
 
 router.put('/', async (req, res) => {
     try {
-        const application = await Application.findById(req.body._id);
+        const application = await Application.findById(req.body.id);
         if (!application) {
             res.status(400).json({message: 'Application not found'});
             return;
@@ -106,7 +105,7 @@ router.put('/', async (req, res) => {
         delete req.body._id;
         Object.assign(application, req.body);
         await application.save();
-        res.status(202).json();
+        res.status(200).json();
     } catch(e) {
         console.log(e);
         res.status(500).json({

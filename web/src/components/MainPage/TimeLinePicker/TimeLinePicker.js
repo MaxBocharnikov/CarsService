@@ -44,47 +44,46 @@ const TimeLinePicker = ({
   items,
   setItems,
   onChangeDate,
-  selectedCalendarDate
+  selectedCalendarDate,
+  applications,
 }) => {
     const [key, setKey] = useState(1);
 
     const handleItemMove = (itemId, dragTime, newGroupOrder) => {
         const group = groups[newGroupOrder];
-        const updated = items.map(item =>
-            item.id === itemId
-                ? Object.assign({}, item, {
-                    start: moment(dragTime).format('YYYY.MM.DD, HH:mm:ss'),
-                    end: moment(moment(dragTime) + (moment(item.end) - moment(item.start))).format('YYYY.MM.DD, HH:mm:ss'),
-                    group: group.id
-                })
-                : item
-        );
+        const foundItem = items.find(i => i.id === itemId);
+        const foundApplication = applications.find(a => a.id === itemId);
+        if (!foundItem || !foundApplication) return;
+        const updated =  Object.assign({}, foundApplication, {
+            startDate: moment(dragTime).format('YYYY.MM.DD, HH:mm:ss'),
+            endDate: moment(moment(dragTime) + (moment(foundItem.end) - moment(foundItem.start))).format('YYYY.MM.DD, HH:mm:ss'),
+            postId: group.id
+        });
         setItems(updated);
     };
 
 
     const handleItemResize = (itemId, time, edge) => {
-        const updated = items.map(item =>
-            item.id === itemId
-                ? Object.assign({}, item, {
-                    start: edge === "left" ? moment(time).format('YYYY.MM.DD, HH:mm:ss') : item.start,
-                    end: edge === "left" ? item.end : moment(time).format('YYYY.MM.DD, HH:mm:ss')
-                })
-                : item
-        );
+        const foundItem = items.find(i => i.id === itemId);
+        const foundApplication = applications.find(a => a.id === itemId);
+        if (!foundItem || !foundApplication) return;
+        const updated = Object.assign({}, foundApplication, {
+            startDate: edge === "left" ? moment(foundItem).format('YYYY.MM.DD, HH:mm:ss') : foundItem.start,
+            endDate: edge === "left" ? foundItem.end : moment(time).format('YYYY.MM.DD, HH:mm:ss')
+        });
         setItems(updated);
     };
 
     const handleCanvasContextMenu = (group, time) => {
-        const id = items.length + 1;
-        const newItem = {
-            id: id,
-            group,
-            title: `item ${id}`,
-            start: moment(time),
-            end: moment(time).add(1, 'hour'),
-        };
-        setItems([...items, newItem]);
+        // const id = items.length + 1;
+        // const newItem = {
+        //     id: id,
+        //     group,
+        //     title: `item ${id}`,
+        //     start: moment(time),
+        //     end: moment(time).add(1, 'hour'),
+        // };
+        // setItems([...items, newItem]);
 
     };
 

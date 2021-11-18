@@ -11,4 +11,9 @@ export default class ApplicationsApi {
         const response = await HttpClient.call('post',`${_BASE_URL}/applications/getByDate`, {startDate, endDate});
         return response.data;
     };
+
+    static updateApplications = async (application) => {
+        const response = await HttpClient.call('put',`${_BASE_URL}/applications`, application);
+        return response.data;
+    };
 }

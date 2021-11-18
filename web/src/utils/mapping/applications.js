@@ -1,11 +1,20 @@
 import moment from 'moment';
 
-export const mapFromApplicationDtoToApplication = (applicationDto) => {
+export const mapFromApplicationToTimeLineApplication = (applicationDto) => {
     return {
         id: applicationDto.id,
-        group: applicationDto.postId.id,
+        group: applicationDto.postId,
         title: applicationDto.clientId.name,
-        start: moment(applicationDto.startDate).format('YYYY.MM.DD, HH:mm:ss'),
-        end: moment(applicationDto.endDate).format('YYYY.MM.DD, HH:mm:ss'),
+        start: applicationDto.startDate,
+        end: applicationDto.endDate,
+        clientId: applicationDto.clientId,
+    }
+};
+
+
+export const mapFromApplicationToUpdatingApplication= (application) => {
+    return {
+        ...application,
+        clientId: application.clientId.id
     }
 };
