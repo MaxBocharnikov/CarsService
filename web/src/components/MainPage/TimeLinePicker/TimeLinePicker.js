@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 
@@ -23,8 +23,12 @@ const TimeLinePicker = ({
   selectedDate,
   groups,
   items,
-  setItems
+  setItems,
+  onChangeDate,
+  selectedCalendarDate
 }) => {
+    const [key, setKey] = useState(1);
+
     const handleItemMove = (itemId, dragTime, newGroupOrder) => {
         const group = groups[newGroupOrder];
         const updated = items.map(item =>
@@ -62,23 +66,34 @@ const TimeLinePicker = ({
             end: moment(time).add(1, 'hour'),
         };
         setItems([...items, newItem]);
+
     };
 
     const onTimeChange = (visibleTimeStart, visibleTimeEnd, updateScrollCanvas) => {
-        // console.log(visibleTimeStart)
-        // console.log(visibleTimeEnd);
+        if (!moment(visibleTimeStart).isSame(selectedDate, 'day')) {
+            onChangeDate(moment(visibleTimeStart))
+        }
         updateScrollCanvas(visibleTimeStart, visibleTimeEnd);
     };
 
-    console.log(groups);
-    console.log(items);
+    useEffect(() => {
+        if (selectedCalendarDate) {
+            setKey(key + 1);
+        }
+    }, [selectedCalendarDate]);
+
     return (
         <S._TimeLinePicker
+            key={key}
             keys={keys}
             groups={groups}
-            items={items}
-            defaultTimeStart={moment(selectedDate).add(-12, 'hour')}
-            defaultTimeEnd={moment(selectedDate).add(12, 'hour')}
+            items={items.map(i => {
+                return {
+                    ...i, start: moment(i.start), end: moment(i.end)
+                }
+            })}
+            defaultTimeStart ={moment(selectedDate)}
+            defaultTimeEnd ={moment(selectedDate).add(23, 'hour')}
             onItemMove={handleItemMove}
             onItemResize={handleItemResize}
             fullUpdate

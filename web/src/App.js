@@ -1,5 +1,4 @@
-import React, {useCallback} from 'react';
-import {useDispatch} from 'react-redux';
+import React from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -10,7 +9,6 @@ import { Layout } from 'antd';
 
 import 'antd/dist/antd.css';
 import MainPage from './pages/MainPage/MainPage';
-import {setSelectedDate} from './store/applications';
 import Header from './components/Header/Header';
 
 const initialGroups = [
@@ -52,19 +50,15 @@ const initialItems = [
 ];
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  const onChangeDate = useCallback((newDate) => {
-      dispatch(setSelectedDate(newDate));
-  }, [dispatch]);
-
-  console.log(initialItems);
   return (
       <Layout>
-          <Header onChangeDate={onChangeDate} />
+          <Header />
           <Router>
               <Routes>
-                  <Route path="/" element={<MainPage />} />
+                  <Route
+                      path="/"
+                       element={<MainPage/>}
+                  />
               </Routes>
           </Router>
       </Layout>

@@ -10,7 +10,7 @@ const applications = createSlice({
         applicationsList: [],
         loading: false,
         error: null,
-        selectedDate: moment(),
+        selectedDate: moment().startOf('day').format('YYYY.MM.DD, HH:mm:ss'),
     },
     reducers: {
         setApplicationsList: (state, action) => {
