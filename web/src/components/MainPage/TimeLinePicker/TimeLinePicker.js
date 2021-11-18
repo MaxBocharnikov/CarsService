@@ -19,6 +19,25 @@ const keys = {
     groupLabelKey: "title"
 };
 
+const itemRenderer = ({item, itemContext, getItemProps, getResizeProps}) => {
+    const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
+    return (
+        <div {...getItemProps(item.itemProps)}>
+            {itemContext.useResizeHandle ? <div {...leftResizeProps} /> : ''}
+
+            <div
+                className="rct-item-content"
+                style={{ maxHeight: `${itemContext.dimensions.height}` }}
+            >
+                <span className="title">{itemContext.title}</span>
+                <span className="time">{item.start.format('HH:mm')}-{item.end.format('HH:mm')}</span>
+            </div>
+
+            {itemContext.useResizeHandle ? <div {...rightResizeProps} /> : ''}
+        </div>
+    )
+};
+
 const TimeLinePicker = ({
   selectedDate,
   groups,
@@ -34,8 +53,8 @@ const TimeLinePicker = ({
         const updated = items.map(item =>
             item.id === itemId
                 ? Object.assign({}, item, {
-                    start: moment(dragTime),
-                    end: moment(dragTime) + (item.end - item.start),
+                    start: moment(dragTime).format('YYYY.MM.DD, HH:mm:ss'),
+                    end: moment(moment(dragTime) + (moment(item.end) - moment(item.start))).format('YYYY.MM.DD, HH:mm:ss'),
                     group: group.id
                 })
                 : item
@@ -48,8 +67,8 @@ const TimeLinePicker = ({
         const updated = items.map(item =>
             item.id === itemId
                 ? Object.assign({}, item, {
-                    start: edge === "left" ? moment(time) : item.start,
-                    end: edge === "left" ? item.end : moment(time)
+                    start: edge === "left" ? moment(time).format('YYYY.MM.DD, HH:mm:ss') : item.start,
+                    end: edge === "left" ? item.end : moment(time).format('YYYY.MM.DD, HH:mm:ss')
                 })
                 : item
         );
@@ -83,24 +102,32 @@ const TimeLinePicker = ({
     }, [selectedCalendarDate]);
 
     return (
-        <S._TimeLinePicker
-            key={key}
-            keys={keys}
-            groups={groups}
-            items={items.map(i => {
-                return {
-                    ...i, start: moment(i.start), end: moment(i.end)
-                }
-            })}
-            defaultTimeStart ={moment(selectedDate)}
-            defaultTimeEnd ={moment(selectedDate).add(23, 'hour')}
-            onItemMove={handleItemMove}
-            onItemResize={handleItemResize}
-            fullUpdate
-            stackItems
-            onCanvasContextMenu={handleCanvasContextMenu}
-            onTimeChange={onTimeChange}
-        />
+        <S.Wrapper>
+            <S.Note>Время</S.Note>
+            <S._TimeLinePicker
+                key={key}
+                keys={keys}
+                groups={groups}
+                items={items.map(i => {
+                    return {
+                        ...i,
+                        start: moment(i.start),
+                        end: moment(i.end),
+                    }
+                })}
+                defaultTimeStart ={moment(selectedDate)}
+                defaultTimeEnd ={moment(selectedDate).add(23, 'hour')}
+                onItemMove={handleItemMove}
+                onItemResize={handleItemResize}
+                fullUpdate
+                stackItems
+                onCanvasContextMenu={handleCanvasContextMenu}
+                onTimeChange={onTimeChange}
+                lineHeight={65}
+                itemHeightRatio={0.86}
+                itemRenderer={itemRenderer}
+            />
+        </S.Wrapper>
     )
 };
 

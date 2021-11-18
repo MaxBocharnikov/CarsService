@@ -1,4 +1,5 @@
 import React from 'react';
+import S from './App.styled';
 import {
     BrowserRouter as Router,
     Routes,
@@ -52,13 +53,14 @@ const initialItems = [
 const App = () => {
   return (
       <Layout>
-          <Header />
+          <S.GlobalStyle />
           <Router>
-              <Routes>
-                  <Route
-                      path="/"
-                       element={<MainPage/>}
-                  />
+            <Header />
+            <Routes>
+                <Route
+                    path="/"
+                    element={<MainPage/>}
+                />
               </Routes>
           </Router>
       </Layout>

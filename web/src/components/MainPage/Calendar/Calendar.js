@@ -3,7 +3,7 @@ import { Calendar } from 'antd';
 import moment from 'moment';
 import S from './Calendar.styled'
 
-const CalendarComponent = ({onChangeDate}) => {
+const CalendarComponent = ({selectedDate, onChangeDate}) => {
 
     const onSelect = (date) => {
         onChangeDate(moment(date))
@@ -11,7 +11,7 @@ const CalendarComponent = ({onChangeDate}) => {
 
     return (
         <S.Wrapper>
-            <Calendar fullscreen={false} onSelect={onSelect} />
+            <Calendar fullscreen={false} onSelect={onSelect} value={moment(selectedDate)} />
         </S.Wrapper>
     )
 };

@@ -6,6 +6,7 @@ import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePic
 import {fetchApplicationsByDate, setApplicationsList, setSelectedDate} from '../../store/applications';
 import {fetchPosts} from '../../store/posts';
 import CalendarComponent from '../../components/MainPage/Calendar/Calendar';
+import S from './MainPage.styled';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -44,12 +45,12 @@ const MainPage = () => {
     return (
          <Content>
              <div style={{position: 'relative'}}>
-                 <span
+                 <S.DateTitle
                      onClick={() => setCalendarShow(!isCalendarShown)}
                  >
                      {moment(selectedDate).format('DD.MM.YYYY')}
-                 </span>
-                 {isCalendarShown && <CalendarComponent onChangeDate={onCalendarSelect} />}
+                 </S.DateTitle>
+                 {isCalendarShown && <CalendarComponent onChangeDate={onCalendarSelect} selectedDate={selectedDate} />}
 
              </div>
              <TimeLinePicker
