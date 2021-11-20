@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { Layout } from 'antd';
-import moment from 'moment';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
 import {
     fetchApplicationsByDate, setApplicationsList, setSelectedDate,
     updateApplication
 } from '../../store/applications';
 import {fetchPosts} from '../../store/posts';
-import CalendarComponent from '../../components/MainPage/Calendar/Calendar';
-import S from './MainPage.styled';
 import {mapFromApplicationToTimeLineApplication} from '../../utils/mapping/applications';
+import SelectedDate from '../../components/MainPage/SelectedDate/SelectedDate';
+import ApplicationPanel from '../../components/MainPage/ApplicationPanel/ApplicationPanel';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -18,8 +17,8 @@ const MainPage = () => {
     const applications = useSelector(state => state.applications.applicationsList);
     const posts = useSelector(state => state.posts.postsList);
 
-    const [isCalendarShown, setCalendarShow] = useState(false);
     const [selectedCalendarDate, setSelectedCalendarDate] = useState(null);
+    const [newApplicationDefaultData, setNewApplicationDefaultData] = useState(null);
 
     const { Content } = Layout;
 
@@ -33,13 +32,14 @@ const MainPage = () => {
         dispatch(updateApplication(newItem)); //to update on server
     }, [dispatch, JSON.stringify(applications)]);
 
+    const setNewApplicationDefaultDataMemo = useCallback(time => setNewApplicationDefaultData(time), []);
+
     const onChangeDate = useCallback((newDate) => {
         dispatch(setSelectedDate(newDate.startOf('day').format('YYYY.MM.DD, HH:mm:ss')));
     }, [dispatch]);
 
     const onCalendarSelect = (date) => {
         setSelectedCalendarDate(selectedDate);
-        setCalendarShow(false);
         onChangeDate(date);
     };
 
@@ -51,16 +51,18 @@ const MainPage = () => {
     if (!posts.length) return null;
 
     return (
+        <>
+        {newApplicationDefaultData && (
+            <ApplicationPanel
+                newApplicationDefaultData={newApplicationDefaultData}
+                onClose={() => setNewApplicationDefaultDataMemo(null)}
+            />
+        )}
          <Content>
-             <div style={{position: 'relative'}}>
-                 <S.DateTitle
-                     onClick={() => setCalendarShow(!isCalendarShown)}
-                 >
-                     {moment(selectedDate).format('DD.MM.YYYY')}
-                 </S.DateTitle>
-                 {isCalendarShown && <CalendarComponent onChangeDate={onCalendarSelect} selectedDate={selectedDate} />}
-
-             </div>
+             <SelectedDate
+                 selectedDate={selectedDate}
+                 onCalendarSelect={onCalendarSelect}
+             />
              <TimeLinePicker
                  selectedDate={selectedDate}
                  groups={posts}
@@ -69,8 +71,10 @@ const MainPage = () => {
                  setItems={onApplicationChange}
                  onChangeDate={onChangeDate}
                  selectedCalendarDate={selectedCalendarDate}
+                 setNewApplicationDefaultDataMemo={setNewApplicationDefaultDataMemo}
              />
          </Content>
+        </>
     )
 };
 

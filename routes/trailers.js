@@ -15,6 +15,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.post('/list', async (req, res) => {
+    try {
+        const { query } = req.body;
+        const trailers = await Trailer.find({
+            "model": new RegExp(query, 'i')
+        });
+        res.status(200).json(trailers);
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
 
 router.post('/',  async (req, res) => {
     const trailer = new Trailer({

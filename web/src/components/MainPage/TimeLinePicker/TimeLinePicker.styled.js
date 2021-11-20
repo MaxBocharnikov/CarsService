@@ -74,6 +74,10 @@ const _TimeLinePicker = styled(Timeline)`
             border: none;     
         }
         
+        .rct-vertical-lines .rct-vl.rct-day-6, .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-0 {
+            background: none;
+        }
+        
         
         .rct-horizontal-lines .rct-hl-even, .rct-horizontal-lines .rct-hl-odd {
             background: ${colors.white};

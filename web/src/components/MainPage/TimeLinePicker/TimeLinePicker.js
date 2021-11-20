@@ -46,6 +46,7 @@ const TimeLinePicker = ({
   onChangeDate,
   selectedCalendarDate,
   applications,
+  setNewApplicationDefaultDataMemo
 }) => {
     const [key, setKey] = useState(1);
 
@@ -75,16 +76,7 @@ const TimeLinePicker = ({
     };
 
     const handleCanvasContextMenu = (group, time) => {
-        // const id = items.length + 1;
-        // const newItem = {
-        //     id: id,
-        //     group,
-        //     title: `item ${id}`,
-        //     start: moment(time),
-        //     end: moment(time).add(1, 'hour'),
-        // };
-        // setItems([...items, newItem]);
-
+        setNewApplicationDefaultDataMemo({ startDate: moment(time), endDate: moment(time).add(1, 'hour'), group});
     };
 
     const onTimeChange = (visibleTimeStart, visibleTimeEnd, updateScrollCanvas) => {

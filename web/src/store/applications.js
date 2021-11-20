@@ -73,5 +73,18 @@ export const updateApplication = (application) => async dispatch => {
     }
 };
 
+export const createApplication = (application) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await ApplicationsApi.createApplications(application);
+        dispatch(fetchApplicationsByDate());
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'));
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
 export const {setApplicationsList, setSelectedDate, setLoading, setError} = applications.actions;
 export default applications.reducer;

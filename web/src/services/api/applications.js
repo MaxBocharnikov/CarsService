@@ -16,4 +16,9 @@ export default class ApplicationsApi {
         const response = await HttpClient.call('put',`${_BASE_URL}/applications`, application);
         return response.data;
     };
+
+    static createApplications = async (application) => {
+        const response = await HttpClient.call('post',`${_BASE_URL}/applications`, application);
+        return response.data;
+    };
 }

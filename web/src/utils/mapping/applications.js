@@ -1,4 +1,4 @@
-import moment from 'moment';
+import {getApplicationTimeFromFields} from '../applications';
 
 export const mapFromApplicationToTimeLineApplication = (applicationDto) => {
     return {
@@ -17,4 +17,18 @@ export const mapFromApplicationToUpdatingApplication= (application) => {
         ...application,
         clientId: application.clientId.id
     }
+};
+
+
+export const mapFromApplicationToCreateApplication = (fields) => {
+  return {
+      clientId: fields.client,
+      trailersIds: fields.trailers,
+      contactInfo: fields.name + ' ' + fields.phone,
+      description: fields.description,
+      postId: fields.post,
+      startDate: getApplicationTimeFromFields(fields).startDate,
+      endDate: getApplicationTimeFromFields(fields).endDate,
+
+  }
 };

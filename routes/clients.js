@@ -6,7 +6,22 @@ const router = Router();
 router.get('/', async (req, res) => {
     try {
         const clients = await Client.find().populate('typeId');
-        res.status(200).json({clients});
+        res.status(200).json(clients);
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
+router.post('/list', async (req, res) => {
+    try {
+        const { query } = req.body;
+        const clients = await Client.find({
+            "name": new RegExp(query, 'i')
+        }).populate('typeId');
+        res.status(200).json(clients);
     } catch(e) {
         console.log(e);
         res.status(500).json({
@@ -18,8 +33,8 @@ router.get('/', async (req, res) => {
 
 router.post('/',  async (req, res) => {
     const client = new Client({
-        name: 'Test Client',
-        typeId: Types.ObjectId('617521da4b5980fff6dba538'),
+        name: 'ООО Рога и Копыта',
+        typeId: Types.ObjectId('61751b4657f5bd6cd96ec9a2'),
     });
 
     try {

@@ -45,7 +45,13 @@ const GlobalStyle = createGlobalStyle`
         margin-top: 90px;
     }
     
+    .oneLineItems {
+        display: flex;
+        justify-content: space-between;
+    }
+    
 `;
+
 
 const S = { GlobalStyle };
 export default S;
