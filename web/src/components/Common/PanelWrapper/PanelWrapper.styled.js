@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import fonts from '../../../constants/styles/fonts';
 import colors from '../../../constants/styles/colors';
 
+const CloseIconWrapper = styled.div`
+    cursor: pointer;
+    position: absolute;
+    right: 100px;
+    top: 40px;
+`;
 
 const Overlay = styled.div`
     width: 100vw;
@@ -45,9 +51,13 @@ const Content = styled.div`
 const Footer = styled.div`
     display: flex;
     justify-content:  ${props => (props.isFullScreen ? 'start' : 'space-between')};
+    
+    button {
+       margin-right: 20px;
+    }
 `;
 
 
-const S = { Overlay, Wrapper, Title, Content, Footer };
+const S = { Overlay, Wrapper, Title, Content, Footer, CloseIconWrapper };
 
 export default S;

@@ -18,3 +18,19 @@ export const getDefaultFieldData = ({startDate, endDate, group}) => {
        post: group,
     }
 };
+
+export const getExtendedFieldsData = (applicationDetails) => {
+    const {clientId, contactName, contactPhone, description, startDate, endDate, postId, trailersIds, workingHourId} = applicationDetails;
+    return {
+        client: clientId.id,
+        name: contactName,
+        phone: contactPhone,
+        description: description,
+        date: getDefaultFieldData({startDate, endDate}).date,
+        time: getDefaultFieldData({startDate, endDate}).time,
+        post: postId.id,
+        trailers: trailersIds.map(t => t.id),
+        workingHourId: workingHourId || '',
+
+    }
+};

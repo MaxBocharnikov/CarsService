@@ -3,18 +3,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import { Layout } from 'antd';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
 import {
-    fetchApplicationsByDate, setApplicationsList, setSelectedDate,
+    fetchApplicationDetails,
+    fetchApplicationsByDate, setApplicationDetails, setApplicationsList, setSelectedDate,
     updateApplication
 } from '../../store/applications';
 import {fetchPosts} from '../../store/posts';
 import {mapFromApplicationToTimeLineApplication} from '../../utils/mapping/applications';
 import SelectedDate from '../../components/MainPage/SelectedDate/SelectedDate';
 import ApplicationPanel from '../../components/MainPage/ApplicationPanel/ApplicationPanel';
+import ExtendedApplicationPanel from '../../components/MainPage/ApplicationPanel/ExtendedApplicationPanel';
 
 const MainPage = () => {
     const dispatch = useDispatch();
     const selectedDate = useSelector(state => state.applications.selectedDate);
     const applications = useSelector(state => state.applications.applicationsList);
+    const applicationDetails = useSelector(state => state.applications.applicationDetails);
     const posts = useSelector(state => state.posts.postsList);
 
     const [selectedCalendarDate, setSelectedCalendarDate] = useState(null);
@@ -58,6 +61,12 @@ const MainPage = () => {
                 onClose={() => setNewApplicationDefaultDataMemo(null)}
             />
         )}
+        {!!applicationDetails && (
+            <ExtendedApplicationPanel
+                applicationDetails={applicationDetails}
+                onClose={() => dispatch(setApplicationDetails(null))}
+            />
+        )}
          <Content>
              <SelectedDate
                  selectedDate={selectedDate}
@@ -72,6 +81,7 @@ const MainPage = () => {
                  onChangeDate={onChangeDate}
                  selectedCalendarDate={selectedCalendarDate}
                  setNewApplicationDefaultDataMemo={setNewApplicationDefaultDataMemo}
+                 onApplicationOpen={(id) => dispatch(fetchApplicationDetails(id))}
              />
          </Content>
         </>

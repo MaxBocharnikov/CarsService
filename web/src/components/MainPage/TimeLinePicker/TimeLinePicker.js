@@ -46,7 +46,8 @@ const TimeLinePicker = ({
   onChangeDate,
   selectedCalendarDate,
   applications,
-  setNewApplicationDefaultDataMemo
+  setNewApplicationDefaultDataMemo,
+  onApplicationOpen
 }) => {
     const [key, setKey] = useState(1);
 
@@ -117,6 +118,8 @@ const TimeLinePicker = ({
                 lineHeight={65}
                 itemHeightRatio={0.86}
                 itemRenderer={itemRenderer}
+                onItemDoubleClick={onApplicationOpen}
+
             />
         </S.Wrapper>
     )

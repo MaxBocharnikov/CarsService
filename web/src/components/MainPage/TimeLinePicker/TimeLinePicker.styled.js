@@ -86,6 +86,11 @@ const _TimeLinePicker = styled(Timeline)`
         
         .rct-vertical-lines .rct-vl {
             border: none !important;
+            
+        }
+        
+        .rct-vertical-lines .rct-vl.rct-day-0 {
+            background: none !important;
         }
         
         .rct-item  {
@@ -109,7 +114,6 @@ const _TimeLinePicker = styled(Timeline)`
             ]
             
           }
-          
           
         }
        

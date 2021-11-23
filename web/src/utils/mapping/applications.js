@@ -24,7 +24,8 @@ export const mapFromApplicationToCreateApplication = (fields) => {
   return {
       clientId: fields.client,
       trailersIds: fields.trailers,
-      contactInfo: fields.name + ' ' + fields.phone,
+      contactName: fields.name,
+      contactPhone: fields.phone,
       description: fields.description,
       postId: fields.post,
       startDate: getApplicationTimeFromFields(fields).startDate,

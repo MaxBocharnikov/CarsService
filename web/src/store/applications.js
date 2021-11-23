@@ -8,6 +8,7 @@ const applications = createSlice({
     name: 'applications',
     initialState: {
         applicationsList: [],
+        applicationDetails: null,
         loading: false,
         error: null,
         selectedDate: moment().startOf('day').format('YYYY.MM.DD, HH:mm:ss'),
@@ -16,6 +17,11 @@ const applications = createSlice({
         setApplicationsList: (state, action) => {
             state.applicationsList = action.payload;
         },
+
+        setApplicationDetails: (state, action) => {
+            state.applicationDetails = action.payload;
+        },
+
         setSelectedDate: (state, action) => {
             state.selectedDate = action.payload
         },
@@ -86,5 +92,18 @@ export const createApplication = (application) => async dispatch => {
     }
 };
 
-export const {setApplicationsList, setSelectedDate, setLoading, setError} = applications.actions;
+export const fetchApplicationDetails = (id) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        const application = await ApplicationsApi.fetchApplicationDetails(id);
+        dispatch(setApplicationDetails(application));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'));
+    } finally {
+        dispatch(setLoading(false));
+    }
+} ;
+
+export const {setApplicationsList, setApplicationDetails, setSelectedDate, setLoading, setError} = applications.actions;
 export default applications.reducer;

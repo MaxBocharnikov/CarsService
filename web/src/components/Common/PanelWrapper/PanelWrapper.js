@@ -2,6 +2,7 @@ import React from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import S from './PanelWrapper.styled';
 import Button from '../UI-Components/Controls/Button/Button';
+import CloseIcon from '../UI-Components/Icons/CloseIcon';
 
 const PanelWrapper = ({
     title,
@@ -20,8 +21,11 @@ const PanelWrapper = ({
             >
                 <S.Wrapper isFullScreen={isFullScreen}>
                     <S.Title>{title}</S.Title>
+                    {isFullScreen && <S.CloseIconWrapper onClick={onClose}>
+                        <CloseIcon/>
+                    </S.CloseIconWrapper> }
                     <S.Content>{children}</S.Content>
-                    <S.Footer>
+                    <S.Footer isFullScreen={isFullScreen} >
                         {btnArray.map(b => (
                             <Button
                                 key={b.id}

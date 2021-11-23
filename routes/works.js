@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     try {
         const works = await Work.find();
-        res.status(200).json({works});
+        res.status(200).json(works);
     } catch(e) {
         console.log(e);
         res.status(500).json({

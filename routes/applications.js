@@ -22,10 +22,11 @@ router.get('/:id', async (req, res) => {
             .populate('clientId')
             .populate('trailersIds')
             .populate('workingHourId')
+            .populate('postId')
             .populate('worksIds')
             .populate('partsIds')
             .exec();
-        res.status(200).json({application});
+        res.status(200).json(application);
     } catch(e) {
         console.log(e);
         res.status(500).json({
@@ -60,7 +61,8 @@ router.post('/',  async (req, res) => {
     const {
         clientId,
         trailersIds,
-        contactInfo,
+        contactName,
+        contactPhone,
         workingHourId,
         description,
         postId,
@@ -73,7 +75,8 @@ router.post('/',  async (req, res) => {
     const application = new Application({
         clientId: clientId,
         trailersIds: trailersIds,
-        contactInfo: contactInfo,
+        contactName: contactName,
+        contactPhone: contactPhone,
         workingHourId: workingHourId,
         description: description,
         postId: postId,

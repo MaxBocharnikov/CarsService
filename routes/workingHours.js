@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     try {
         const workingHours = await WorkingHour.find();
-        res.status(200).json({workingHours});
+        res.status(200).json(workingHours);
     } catch(e) {
         console.log(e);
         res.status(500).json({
@@ -23,7 +23,7 @@ router.post('/',  async (req, res) => {
 
     try {
         const result = await workingHour.save();
-        res.status(201).json({result})
+        res.status(201).json(result)
     } catch(e) {
         console.log(e)
         res.status(500).json({
@@ -31,5 +31,9 @@ router.post('/',  async (req, res) => {
         })
     }
 });
+
+
+
+
 
 module.exports = router;

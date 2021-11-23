@@ -21,4 +21,9 @@ export default class ApplicationsApi {
         const response = await HttpClient.call('post',`${_BASE_URL}/applications`, application);
         return response.data;
     };
+
+    static fetchApplicationDetails = async (id) => {
+        const response = await HttpClient.call('get',`${_BASE_URL}/applications/${id}`);
+        return response.data;
+    };
 }

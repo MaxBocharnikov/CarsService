@@ -50,6 +50,7 @@ const StyledSelect = styled(Select)`
        .ant-select-selector {
             border: none !important;
             box-shadow: none !important;
+            padding: 0;
        }
    }
    
