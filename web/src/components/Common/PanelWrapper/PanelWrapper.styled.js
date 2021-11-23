@@ -24,7 +24,8 @@ const Wrapper = styled.div`
     right: 0;
     top: 0;
     width: ${props => (props.isFullScreen ? '100%' : '620px')};
-    height: 100%;
+    height: 100vh;
+    overflow: auto;
     padding: ${props => (props.isFullScreen ? '40px 100px' : '40px 20px')};
     background: ${colors.white};
     z-index: 1000;

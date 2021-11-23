@@ -30,7 +30,7 @@ const _Button = styled(Button)`
        background: ${props => props.isSelected ? colors.purple : colors.white} !important;   
        border: none !important;
     }
-    }
+  }
 `;
 
 const S = { Wrapper, _Button };

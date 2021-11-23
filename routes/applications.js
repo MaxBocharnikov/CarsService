@@ -23,8 +23,8 @@ router.get('/:id', async (req, res) => {
             .populate('trailersIds')
             .populate('workingHourId')
             .populate('postId')
-            .populate('worksIds')
-            .populate('partsIds')
+            .populate('works')
+            .populate('parts')
             .exec();
         res.status(200).json(application);
     } catch(e) {
@@ -68,8 +68,8 @@ router.post('/',  async (req, res) => {
         postId,
         startDate,
         endDate,
-        worksIds,
-        partsIds,
+        works,
+        parts,
     } = req.body;
 
     const application = new Application({
@@ -82,8 +82,8 @@ router.post('/',  async (req, res) => {
         postId: postId,
         startDate: startDate,
         endDate: endDate,
-        worksIds: worksIds,
-        partsIds: partsIds,
+        works: works,
+        parts: parts,
         dateCreated: new Date().toLocaleString()
     });
 

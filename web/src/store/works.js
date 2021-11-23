@@ -22,10 +22,10 @@ const works = createSlice({
     }
 });
 
-export const fetchWorks = () => async dispatch => {
+export const fetchWorks = (v) => async dispatch => {
     try {
         dispatch(setLoading(true));
-        const works = await Works.fetchWorks();
+        const works = await Works.fetchWorks(v);
         dispatch(setWorks(works));
     } catch(e) {
         console.error(e);

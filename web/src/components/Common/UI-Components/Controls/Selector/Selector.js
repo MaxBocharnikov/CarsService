@@ -16,7 +16,7 @@ const Select = ({
 
     const delayedSearch = useCallback(
         _.debounce((v) => {
-            onSearch &&onSearch(v);
+            onSearch && onSearch(v);
         }, 300), []);
 
     return (

@@ -14,10 +14,25 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.post('/list', async (req, res) => {
+    try {
+        const { query } = req.body;
+        const works = await Work.find({
+            "name": new RegExp(query, 'i')
+        });
+        res.status(200).json(works);
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
 router.post('/',  async (req, res) => {
     const work = new Work({
-        number: '123',
-        name: 'Test Work 1',
+        name: 'Считывание кодов на исправление',
+        time: 1,
     });
 
     try {

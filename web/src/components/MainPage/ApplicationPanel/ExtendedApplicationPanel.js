@@ -11,6 +11,9 @@ import {fetchWorkingHours} from '../../../store/workingHours';
 import {fetchWorks} from '../../../store/works';
 import {fetchParts} from '../../../store/parts';
 import Switcher from '../../Common/UI-Components/Switcher/Switcher';
+import ExpandingTable from '../../Common/UI-Components/ExpandingTable/ExpandingTable';
+import WorksTable from './components/WorksTable';
+import PartsTable from './components/PartsTable';
 
 const ExtendedApplicationPanel = ({
   onClose,
@@ -26,9 +29,10 @@ const ExtendedApplicationPanel = ({
     const parts = useSelector(state => state.parts.partsList);
 
     const [isOutlineHandlerDisable, setIsOutlineHandlerDisable] = useState(false);
-    const [fields, setFields] = useState(getExtendedFieldsData(applicationDetails));
+    const [fields, setFields] = useState(getExtendedFieldsData(applicationDetails, workingHours));
 
-    const [selectedOptionType, setSelectedOptionType] = useState('parts');
+
+    const [selectedOptionType, setSelectedOptionType] = useState('works');
 
     const setSelectedOptionTypeMemo = useCallback(type => {
         setSelectedOptionType(type);
@@ -66,9 +70,13 @@ const ExtendedApplicationPanel = ({
         dispatch(fetchParts());
     }, []);
 
+    useEffect(() => {
+        setFields(getExtendedFieldsData(applicationDetails, workingHours));
+    }, [JSON.stringify(workingHours)]);
+
     if (!clients.length || !trailers.length || !works.length || !parts.length) return null;
 
-    console.log(selectedOptionType);
+    console.log(fields)
     return (
         <PanelWrapper
             title="Заявка"
@@ -190,10 +198,30 @@ const ExtendedApplicationPanel = ({
             <Switcher
                 selectedValue={selectedOptionType}
                 options={[
-                    {value: 'works', label: 'Услуги', onClick: () => setSelectedOptionTypeMemo('works')},
-                    {value: 'parts', label: 'Запчасти', onClick: () => setSelectedOptionTypeMemo('parts')},
+                    {value: 'works', label: 'УСЛУГИ', onClick: () => setSelectedOptionTypeMemo('works')},
+                    {value: 'parts', label: 'ЗАПЧАСТИ', onClick: () => setSelectedOptionTypeMemo('parts')},
                 ]}
             />
+            {selectedOptionType === 'works' ? (
+                <WorksTable
+                    fields={fields}
+                    onChange={(value) => onChange('works', value)}
+                    works={works}
+                    onSearch={(v) => dispatch(fetchWorks(v))}
+                    onFocus={() => setIsOutlineHandlerDisable(true)}
+                    onBlur={() => setIsOutlineHandlerDisable(false)}
+                    workingHours={workingHours}
+                />
+            ) : (
+                <PartsTable
+                    fields={fields}
+                    onChange={(value) => onChange('parts', value)}
+                    parts={parts}
+                    onSearch={(v) => dispatch(fetchParts(v))}
+                    onFocus={() => setIsOutlineHandlerDisable(true)}
+                    onBlur={() => setIsOutlineHandlerDisable(false)}
+                />
+            )}
         </PanelWrapper>
     )
 };

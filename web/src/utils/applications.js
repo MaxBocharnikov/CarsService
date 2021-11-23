@@ -19,8 +19,8 @@ export const getDefaultFieldData = ({startDate, endDate, group}) => {
     }
 };
 
-export const getExtendedFieldsData = (applicationDetails) => {
-    const {clientId, contactName, contactPhone, description, startDate, endDate, postId, trailersIds, workingHourId} = applicationDetails;
+export const getExtendedFieldsData = (applicationDetails, workingHours) => {
+    const {clientId, contactName, contactPhone, description, startDate, endDate, postId, trailersIds, workingHourId, works, parts} = applicationDetails;
     return {
         client: clientId.id,
         name: contactName,
@@ -30,7 +30,36 @@ export const getExtendedFieldsData = (applicationDetails) => {
         time: getDefaultFieldData({startDate, endDate}).time,
         post: postId.id,
         trailers: trailersIds.map(t => t.id),
-        workingHourId: workingHourId || '',
+        workingHourId: workingHourId || (workingHours[0] ? workingHours[0].id : ''),
+        works: works || [],
+        parts: parts || [],
 
     }
 };
+
+export const mapFromWorkToApplicationWork = (id, works, workingHours, selectedWorkingHoursId) => {
+    const foundWork = works.find(w => w.id === id);
+    if (!foundWork) return;
+    const foundHours = workingHours.find(w => w.id === selectedWorkingHoursId);
+    const pricePerHour = foundHours ? +foundHours.title : 1;
+    return {
+        name: foundWork.name,
+        time: foundWork.time,
+        quantity: '1',
+        pricePerHour,
+        sum: pricePerHour * foundWork.time
+    }
+};
+
+export const mapFromPartToApplicationPart = (id, parts) => {
+    const foundPart = parts.find(w => w.id === id);
+    if (!foundPart) return;
+    return {
+        number: foundPart.number,
+        name: foundPart.name,
+        quantity: '1',
+        remainers: foundPart.quantity,
+        price: foundPart.price,
+        sum: foundPart.price,
+    }
+}
