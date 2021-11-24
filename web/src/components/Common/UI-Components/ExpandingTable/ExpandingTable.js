@@ -89,7 +89,8 @@ const ExpandingTable = ({
    onSelect,
    onBlur,
    onFocus,
-   getSum
+   getSum,
+   placeholder
 }) => {
 
     const handleSave = row => {
@@ -128,6 +129,7 @@ const ExpandingTable = ({
                 width="50%"
                 onFocus={onFocus}
                 onBlur={onBlur}
+                placeholder={placeholder}
             />
             <S._Table
               components={{

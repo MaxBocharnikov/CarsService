@@ -14,6 +14,7 @@ const applicationSchema = new BaseSchema({
     endDate: {type: String, required: true},
     works: [{
         workId: {type: BaseSchema.Types.ObjectId, ref: 'Work', required: true},
+        name: {type: String, required: true},
         time: {type: String, required: true},
         quantity: {type: Number, required: true},
         pricePerHour: {type: Number, required: true},
@@ -21,10 +22,12 @@ const applicationSchema = new BaseSchema({
     }],
     parts: [{
         partId: {type: BaseSchema.Types.ObjectId, ref: 'Part', required: true},
+        name: {type: String, required: true},
         quantity: {type: Number, required: true},
-        remainder: {type: Number, required: true},
+        remainers: {type: Number, required: true},
         price: {type: Number, required: true},
-        sum: {type: Number, required: true}
+        sum: {type: Number, required: true},
+        number: {type: String, required: true}
     }],
     dateCreated: {type: String, required: true},
     sum: {type: Number},

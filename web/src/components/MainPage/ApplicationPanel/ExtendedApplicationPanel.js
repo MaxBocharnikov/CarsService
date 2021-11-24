@@ -14,6 +14,12 @@ import Switcher from '../../Common/UI-Components/Switcher/Switcher';
 import ExpandingTable from '../../Common/UI-Components/ExpandingTable/ExpandingTable';
 import WorksTable from './components/WorksTable';
 import PartsTable from './components/PartsTable';
+import {
+    mapFromApplicationToCreateApplication,
+    mapFromApplicationToExtendedUpdateApplication
+} from '../../../utils/mapping/applications';
+import {updateApplication} from '../../../store/applications';
+import SumResult from './components/SumResult/SumResult';
 
 const ExtendedApplicationPanel = ({
   onClose,
@@ -56,9 +62,8 @@ const ExtendedApplicationPanel = ({
         !fields.trailers.length
 
     const onSave = () => {
-        // const mapped = mapFromApplicationToCreateApplication(fields);
-        // dispatch(createApplication(mapped));
-        console.log(fields);
+        const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails.id,fields);
+        dispatch(updateApplication(mapped));
         onClose();
     };
 
@@ -74,9 +79,14 @@ const ExtendedApplicationPanel = ({
         setFields(getExtendedFieldsData(applicationDetails, workingHours));
     }, [JSON.stringify(workingHours)]);
 
+    useEffect(() => {
+        const worksSum = fields.works.reduce((acm, current) => acm + current.sum, 0);
+        const partsSum = fields.parts.reduce((acm, current) => acm + current.sum, 0);
+        onChange('sum', +worksSum + +partsSum);
+    }, [JSON.stringify(fields.works), JSON.stringify(fields.parts)]);
+
     if (!clients.length || !trailers.length || !works.length || !parts.length) return null;
 
-    console.log(fields)
     return (
         <PanelWrapper
             title="Заявка"
@@ -222,6 +232,7 @@ const ExtendedApplicationPanel = ({
                     onBlur={() => setIsOutlineHandlerDisable(false)}
                 />
             )}
+            <SumResult fields={fields}/>
         </PanelWrapper>
     )
 };

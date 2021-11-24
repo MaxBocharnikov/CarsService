@@ -50,9 +50,9 @@ const ApplicationPanel = ({
         !fields.trailers.length
 
 
-    const onSave = () => {
+    const onSave = (event, toEdit) => {
         const mapped = mapFromApplicationToCreateApplication(fields);
-        dispatch(createApplication(mapped));
+        dispatch(createApplication(mapped, toEdit));
         onClose();
     };
 
@@ -72,7 +72,7 @@ const ApplicationPanel = ({
                 {
                     id: 2,
                     text: 'Открыть Заявку',
-                    onClick: onClose,
+                    onClick: (event) => onSave(event, true),
                     disabled: disabled
                 }
             ]}

@@ -54,6 +54,7 @@ const PartsTable = ({
             onFocus={onFocus}
             onBlur={onBlur}
             getSum={row => +row.quantity * +row.price}
+            placeholder="Добавить запчасть"
         />
     )
 };

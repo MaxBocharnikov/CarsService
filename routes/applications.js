@@ -21,8 +21,6 @@ router.get('/:id', async (req, res) => {
             .findById(req.params.id)
             .populate('clientId')
             .populate('trailersIds')
-            .populate('workingHourId')
-            .populate('postId')
             .populate('works')
             .populate('parts')
             .exec();

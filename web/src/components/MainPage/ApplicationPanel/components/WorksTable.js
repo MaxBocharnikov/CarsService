@@ -50,6 +50,7 @@ const WorksTable = ({
             onFocus={onFocus}
             onBlur={onBlur}
             getSum={row => +row.quantity * row.pricePerHour * row.time}
+            placeholder="Добавить услугу"
         />
     )
 };

@@ -79,11 +79,15 @@ export const updateApplication = (application) => async dispatch => {
     }
 };
 
-export const createApplication = (application) => async dispatch => {
+export const createApplication = (application, toEdit) => async dispatch => {
     try {
+        console.log(toEdit)
         dispatch(setLoading(true));
-        await ApplicationsApi.createApplications(application);
+        const {result} = await ApplicationsApi.createApplications(application);
         dispatch(fetchApplicationsByDate());
+        if (toEdit) {
+            dispatch(fetchApplicationDetails(result.id));
+        }
     } catch(e) {
         console.error(e);
         dispatch(setError('Something went wrong'));
