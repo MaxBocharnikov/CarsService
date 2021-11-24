@@ -14,7 +14,6 @@ const Select = ({
   placeholder
  }) => {
     const { Option } = SS.StyledSelect;
-    console.log(placeholder)
     const delayedSearch = useCallback(
         _.debounce((v) => {
             onSearch && onSearch(v);

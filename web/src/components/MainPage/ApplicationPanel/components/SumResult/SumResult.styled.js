@@ -27,7 +27,7 @@ const Label = styled.div`
 
 const Value = styled.div`
     font-size: ${fonts.header};
-    color: ${colors.darkGray};
+    color: ${colors.black};
 `;
 
 const S = { Wrapper, Item, Label, Value  };
