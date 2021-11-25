@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import colors from './constants/styles/colors';
+import fonts from './constants/styles/fonts';
 
 const GlobalStyle = createGlobalStyle`
     @font-face {
@@ -48,6 +49,19 @@ const GlobalStyle = createGlobalStyle`
     .oneLineItems {
         display: flex;
         justify-content: space-between;
+    }
+    
+    .addItemBtn {
+        outline: none;
+        border: none;
+        background: none;
+        
+        color: #4F4F4F;
+        font-size: ${fonts.small};
+        line-height: 14px;
+        cursor: pointer;
+        text-decoration: underline;
+        display: block;
     }
     
 `;

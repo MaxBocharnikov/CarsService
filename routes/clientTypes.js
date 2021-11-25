@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
 router.post('/',  async (req, res) => {
     const clientType = new ClientType({
-        type: 'физ лицо',
+        type: 'Индвивидуальный предприниматель',
     });
 
     try {

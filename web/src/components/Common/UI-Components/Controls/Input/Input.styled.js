@@ -5,6 +5,7 @@ import colors from '../../../../../constants/styles/colors';
 import fonts from '../../../../../constants/styles/fonts';
 
 const Wrapper = styled.div`
+    position: relative;
     margin-bottom: 20px;
     width: ${props => props.width || '100%'};
 `;
@@ -51,6 +52,10 @@ const StyledSelect = styled(Select)`
             border: none !important;
             box-shadow: none !important;
             padding: 0;
+       }
+       
+       .ant-select-arrow {
+          padding-right: ${props => props.additionalIcon ? '45px' : '0'};
        }
    }
    

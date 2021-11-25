@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     overflow: auto;
     padding: ${props => (props.isFullScreen ? '40px 100px' : '40px 20px')};
     background: ${colors.white};
-    z-index: 1000;
+    z-index: ${props => props.zIndex || '1000'};
     
     display: flex;
     flex-direction: column;
@@ -43,6 +43,7 @@ const Title = styled.h2`
     margin: 0;
     padding: 0;
     margin-bottom: 40px;
+    text-transform: uppercase;
 `;
 
 const Content = styled.div`

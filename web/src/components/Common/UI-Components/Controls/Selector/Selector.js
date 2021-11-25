@@ -11,7 +11,8 @@ const Select = ({
   onFocus,
   onBlur,
   onSearch,
-  placeholder
+  placeholder,
+  additionalIcon,
  }) => {
     const { Option } = SS.StyledSelect;
     const delayedSearch = useCallback(
@@ -32,6 +33,7 @@ const Select = ({
                 onSearch={delayedSearch}
                 filterOption={false}
                 placeholder={placeholder}
+                additionalIcon={additionalIcon}
             >
                 {data.map(i => (
                     <Option key={i.value}
@@ -41,6 +43,7 @@ const Select = ({
                     </Option>
                 ))}
             </SS.StyledSelect>
+            {additionalIcon ? additionalIcon : null}
         </SS.Wrapper>
     )
 };

@@ -1,5 +1,4 @@
 const {Router} = require('express');
-const {Types} = require('mongoose');
 const Client = require('../models/client');
 const router = Router();
 
@@ -20,7 +19,7 @@ router.post('/list', async (req, res) => {
         const { query } = req.body;
         const clients = await Client.find({
             "name": new RegExp(query, 'i')
-        }).populate('typeId');
+        })
         res.status(200).json(clients);
     } catch(e) {
         console.log(e);
@@ -32,16 +31,54 @@ router.post('/list', async (req, res) => {
 
 
 router.post('/',  async (req, res) => {
-    const client = new Client({
-        name: 'ООО Рога и Копыта',
-        typeId: Types.ObjectId('61751b4657f5bd6cd96ec9a2'),
-    });
-
     try {
+        const {
+            type,
+            name,
+            address,
+            legalAddress,
+            inn,
+            kpp,
+            ogrn,
+            carInfo,
+            contactInfo,
+        } = req.body;
+
+        const client = new Client({
+            type,
+            name,
+            address,
+            legalAddress,
+            inn,
+            kpp,
+            ogrn,
+            carInfo,
+            contactInfo,
+        });
+
         const result = await client.save();
         res.status(201).json({result})
     } catch(e) {
         console.log(e)
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
+router.put('/', async (req, res) => {
+    try {
+        const client = await Client.findById(req.body.id);
+        if (!client) {
+            res.status(400).json({message: 'Application not found'});
+            return;
+        }
+        delete req.body._id;
+        Object.assign(client, req.body);
+        await client.save();
+        res.status(200).json();
+    } catch(e) {
+        console.log(e);
         res.status(500).json({
             message: 'Server error'
         })

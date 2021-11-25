@@ -4,9 +4,10 @@ import S from './Switcher.styled';
 const Switcher = ({
   selectedValue,
   options,
+  className,
 }) => {
     return (
-        <S.Wrapper>
+        <S.Wrapper className={className}>
             {options.map(o => (
                 <S._Button
                     key={o.value}

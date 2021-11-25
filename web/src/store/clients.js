@@ -35,5 +35,17 @@ export const fetchClients = (query) => async dispatch => {
     }
 };
 
+export const createClient = (client) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await ClientsApi.createClient(client);
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
 export const {setClientsList, setLoading, setError} = clients.actions;
 export default clients.reducer;
