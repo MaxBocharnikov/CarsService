@@ -64,6 +64,10 @@ const GlobalStyle = createGlobalStyle`
         display: block;
     }
     
+    .ant-select-dropdown {
+       z-index: 10009 !important;
+     }
+    
 `;
 
 

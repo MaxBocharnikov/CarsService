@@ -13,6 +13,7 @@ import AddIcon from '../../Common/UI-Components/Icons/AddIcon';
 
 import S from './ApplicationPanel.styled';
 import AddClientPanel from '../../Common/AddClientPanel/AddClientPanel';
+import AddTrailer from '../../Common/AddTrailerPanel/AddTrailerPanel';
 
 const ApplicationPanel = ({
     onClose,
@@ -25,6 +26,7 @@ const ApplicationPanel = ({
     const trailers = useSelector(state => state.trailers.trailersList);
 
     const [isAddClientPanelOpen, setIsAddClientPanelOpen] = useState(false);
+    const [isAddTrailerPanelOpen, setIsAddTrailerPanelOpen] = useState(false);
 
     const [isOutlineHandlerDisable, setIsOutlineHandlerDisable] = useState(false);
     const [fields, setFields] = useState({
@@ -65,6 +67,7 @@ const ApplicationPanel = ({
     return (
         <>
         {isAddClientPanelOpen && <AddClientPanel onClose={() => setIsAddClientPanelOpen(false)}/>}
+        {isAddTrailerPanelOpen && <AddTrailer onClose={() => setIsAddTrailerPanelOpen(false)}/>}
             <PanelWrapper
                 title="Заявка"
                 onClose={onClose}
@@ -84,7 +87,7 @@ const ApplicationPanel = ({
                         disabled: disabled
                     }
                 ]}
-                isOutlineHandlerDisable={isOutlineHandlerDisable || isAddClientPanelOpen}
+                isOutlineHandlerDisable={isOutlineHandlerDisable || isAddClientPanelOpen || isAddTrailerPanelOpen}
             >
                 <Select
                     label="Контрагент"
@@ -112,14 +115,14 @@ const ApplicationPanel = ({
                     data={trailers.map(p => (
                         {
                             value: p.id,
-                            label: p.model
+                            label: p.name
                         }
                     ))}
                     onFocus={() => setIsOutlineHandlerDisable(true)}
                     onBlur={() => setIsOutlineHandlerDisable(false)}
                     onSearch={(v) => dispatch(fetchTrailers(v))}
                     additionalIcon={
-                        <S.AdditionIconWrapper>
+                        <S.AdditionIconWrapper onClick={() => setIsAddTrailerPanelOpen(true)}>
                             <AddIcon/>
                         </S.AdditionIconWrapper>
                     }

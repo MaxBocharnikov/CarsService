@@ -12,6 +12,7 @@ const trailers = createSlice({
         setTrailersList: (state, action) => {
             state.trailersList = action.payload;
         },
+
         setLoading: (state, action) => {
             state.loading = action.payload
         },
@@ -27,6 +28,18 @@ export const fetchTrailers = (query) => async dispatch => {
         dispatch(setLoading(true));
         const trailers = await TrailersApi.fetchTrailers(query);
         dispatch(setTrailersList(trailers));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
+export const createTrailer = (trailers) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await TrailersApi.createTrailer(trailers);
     } catch(e) {
         console.error(e);
         dispatch(setError('Something went wrong'))

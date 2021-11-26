@@ -29,7 +29,7 @@ const Select = ({
                 onChange={v => onChange(v)}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                showSearch
+                showSearch={!!onSearch}
                 onSearch={delayedSearch}
                 filterOption={false}
                 placeholder={placeholder}

@@ -53,6 +53,7 @@ const StyledSelect = styled(Select)`
             box-shadow: none !important;
             padding: 0;
        }
+      
        
        .ant-select-arrow {
           padding-right: ${props => props.additionalIcon ? '45px' : '0'};
