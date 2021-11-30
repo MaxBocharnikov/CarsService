@@ -19,7 +19,11 @@ router.post('/list', async (req, res) => {
     try {
         const { query } = req.body;
         const trailers = await Trailer.find({
-            "name": new RegExp(query, 'i')
+            $or: [
+                {"name": new RegExp(query, 'i')},
+                {"vin": new RegExp(query, 'i')},
+                {"stateNumber": new RegExp(query, 'i')}
+            ]
         });
         res.status(200).json(trailers);
     } catch(e) {

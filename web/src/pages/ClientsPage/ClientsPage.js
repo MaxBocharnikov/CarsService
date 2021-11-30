@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchClients} from '../../store/clients';
+import {fetchClients, setClientsList} from '../../store/clients';
 import ListPageWrapper from '../../components/Common/UI-Components/ListPageWrapper/ListPageWrapper';
 import AddClientPanel from '../../components/Common/AddClientPanel/AddClientPanel';
 
@@ -18,7 +18,7 @@ const ClientsPage = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(fetchClients([]));
+            dispatch(setClientsList([]));
         };
     }, []);
 

@@ -3,7 +3,8 @@ import {useDispatch} from 'react-redux';
 import PanelWrapper from '../PanelWrapper/PanelWrapper';
 import Select from '../UI-Components/Controls/Selector/Selector';
 import Input from '../UI-Components/Controls/Input/Input';
-import {createTrailer} from '../../../store/trailers';
+import {createTrailer, updateTrailer} from '../../../store/trailers';
+import {getInitialTrailerFields} from '../../../utils/trailers';
 
 const TYPES_OPTIONS = [
     { value: 'прицеп', label: 'Прицеп'},
@@ -15,24 +16,12 @@ const MODEL_OPTIONS = [
     { value: 'reno', label: 'Reno'},
 ];
 
-const AddTrailer = ({onClose}) => {
+const AddTrailer = ({onClose, dataItem, searchValue}) => {
     const dispatch = useDispatch();
     
     const [isOutlineHandlerDisable, setIsOutlineHandlerDisable] = useState(false);
 
-    const [fields, setFields] = useState({
-        type: '',
-        model: '',
-        vin: '',
-        stateNumber: '',
-        mileage: '',
-        client: '',
-        name: '',
-        contract: '',
-        guaranteeType: '',
-        guaranteeStartDate: '',
-        guaranteeEndDate: '',
-    });
+    const [fields, setFields] = useState(getInitialTrailerFields(dataItem));
 
     const disabled =
         !fields.type ||
@@ -47,13 +36,15 @@ const AddTrailer = ({onClose}) => {
     };
 
     const onSave = () => {
-        dispatch(createTrailer(fields));
+        dataItem
+            ? dispatch(updateTrailer(fields, searchValue))
+            : dispatch(createTrailer(fields, searchValue));
         onClose();
     };
 
     return (
         <PanelWrapper
-            title="Создание Нового ТС"
+            title="Транспортное средство"
             onClose={onClose}
             btnArray={[
                 {

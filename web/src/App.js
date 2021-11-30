@@ -13,6 +13,7 @@ import MainPage from './pages/MainPage/MainPage';
 import Header from './components/Header/Header';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
 import ClientsPage from './pages/ClientsPage/ClientsPage';
+import TrailersPage from './pages/TrailersPage/TrailersPage';
 
 const { Content } = Layout;
 
@@ -73,6 +74,10 @@ const App = () => {
                     <Route
                         path="/clients"
                         element={<ClientsPage/>}
+                    />
+                    <Route
+                        path="/trailers"
+                        element={<TrailersPage/>}
                     />
                   </Routes>
             </Content>

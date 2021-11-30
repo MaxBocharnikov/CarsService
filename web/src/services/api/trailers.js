@@ -11,4 +11,9 @@ export default class TrailersApi {
         const response = await HttpClient.call('post',`${_BASE_URL}/trailers`, trailer);
         return response.data;
     };
+
+    static updateTrailer = async (trailer) => {
+        const response = await HttpClient.call('put',`${_BASE_URL}/trailers`, trailer);
+        return response.data;
+    };
 }

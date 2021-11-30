@@ -36,10 +36,24 @@ export const fetchTrailers = (query) => async dispatch => {
     }
 };
 
-export const createTrailer = (trailers) => async dispatch => {
+export const createTrailer = (trailer, query) => async dispatch => {
     try {
         dispatch(setLoading(true));
-        await TrailersApi.createTrailer(trailers);
+        await TrailersApi.createTrailer(trailer);
+        if (query !== undefined) dispatch(fetchTrailers(query));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
+export const updateTrailer = (trailer, query) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await TrailersApi.updateTrailer(trailer);
+        dispatch(fetchTrailers(query));
     } catch(e) {
         console.error(e);
         dispatch(setError('Something went wrong'))
