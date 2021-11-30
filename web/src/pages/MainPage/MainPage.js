@@ -11,6 +11,7 @@ import {mapFromApplicationToTimeLineApplication} from '../../utils/mapping/appli
 import SelectedDate from '../../components/MainPage/SelectedDate/SelectedDate';
 import ApplicationPanel from '../../components/MainPage/ApplicationPanel/ApplicationPanel';
 import ExtendedApplicationPanel from '../../components/MainPage/ApplicationPanel/ExtendedApplicationPanel';
+import {setClientsList} from '../../store/clients';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const MainPage = () => {
     useEffect(() => {
         return () => {
             dispatch(setApplicationsList([]));
+            dispatch(setClientsList([]));
         };
     }, []);
 

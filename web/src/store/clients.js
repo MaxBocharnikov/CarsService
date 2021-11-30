@@ -35,10 +35,24 @@ export const fetchClients = (query) => async dispatch => {
     }
 };
 
-export const createClient = (client) => async dispatch => {
+export const createClient = (client, query) => async dispatch => {
     try {
         dispatch(setLoading(true));
         await ClientsApi.createClient(client);
+        if (query !== undefined) dispatch(fetchClients(query));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
+export const updateClient = (client, query) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await ClientsApi.updateClient(client);
+        dispatch(fetchClients(query));
     } catch(e) {
         console.error(e);
         dispatch(setError('Something went wrong'))

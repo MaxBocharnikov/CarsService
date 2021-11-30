@@ -18,8 +18,11 @@ router.post('/list', async (req, res) => {
     try {
         const { query } = req.body;
         const clients = await Client.find({
-            "name": new RegExp(query, 'i')
-        })
+            $or: [
+                {"name": new RegExp(query, 'i')},
+                {"inn": new RegExp(query, 'i')}
+            ]
+        });
         res.status(200).json(clients);
     } catch(e) {
         console.log(e);
@@ -70,7 +73,7 @@ router.put('/', async (req, res) => {
     try {
         const client = await Client.findById(req.body.id);
         if (!client) {
-            res.status(400).json({message: 'Application not found'});
+            res.status(400).json({message: 'client not found'});
             return;
         }
         delete req.body._id;

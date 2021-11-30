@@ -12,6 +12,7 @@ import 'antd/dist/antd.css';
 import MainPage from './pages/MainPage/MainPage';
 import Header from './components/Header/Header';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
+import ClientsPage from './pages/ClientsPage/ClientsPage';
 
 const { Content } = Layout;
 
@@ -68,6 +69,10 @@ const App = () => {
                     <Route
                         path="/applications"
                         element={<ApplicationsPage/>}
+                    />
+                    <Route
+                        path="/clients"
+                        element={<ClientsPage/>}
                     />
                   </Routes>
             </Content>

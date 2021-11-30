@@ -30,6 +30,7 @@ const ExtendedApplicationPanel = ({
   onClose,
   applicationDetails,
   isNew,
+  searchValue,
 }) => {
     const dispatch = useDispatch();
 
@@ -73,8 +74,8 @@ const ExtendedApplicationPanel = ({
     const onSave = () => {
         const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails?.id,fields);
         isNew
-            ? dispatch(createApplication(mapped, false, true))
-            : dispatch(updateApplication(mapped));
+            ? dispatch(createApplication(mapped, false, searchValue))
+            : dispatch(updateApplication(mapped, searchValue));
         onClose();
     };
 

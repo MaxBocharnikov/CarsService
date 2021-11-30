@@ -3,6 +3,8 @@ import _ from 'lodash';
 import S from './ListPageWrapper.styled';
 
 const ListPageWrapper = ({
+    searchValue,
+    setSearchValue,
     addButtonLabel,
     onAddClick,
     searchPlaceholder,
@@ -11,7 +13,6 @@ const ListPageWrapper = ({
     data,
     onRowClick,
 }) => {
-    const [searchValue, setSearchValue] = useState('');
 
     const delayedSearch = useCallback(
         _.debounce((v) => {
@@ -26,10 +27,7 @@ const ListPageWrapper = ({
         <S.Wrapper>
             <S.Header>
                 <S._Button
-                    onClick={() => {
-                        setSearchValue('');
-                        onAddClick();
-                    }}
+                    onClick={() => onAddClick(searchValue)}
 
                 >
                     {addButtonLabel}

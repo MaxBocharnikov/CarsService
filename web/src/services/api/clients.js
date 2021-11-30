@@ -11,4 +11,9 @@ export default class PostsApi {
         const response = await HttpClient.call('post',`${_BASE_URL}/clients`, client);
         return response.data;
     };
+
+    static updateClient = async (client) => {
+        const response = await HttpClient.call('put',`${_BASE_URL}/clients`, client);
+        return response.data;
+    };
 }

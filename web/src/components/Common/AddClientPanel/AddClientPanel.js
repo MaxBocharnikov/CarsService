@@ -3,8 +3,9 @@ import {useDispatch} from 'react-redux';
 import PanelWrapper from '../PanelWrapper/PanelWrapper';
 import Switcher from '../UI-Components/Switcher/Switcher';
 import Input from '../UI-Components/Controls/Input/Input';
-import {createClient} from '../../../store/clients';
+import {createClient, updateClient} from '../../../store/clients';
 import S from './AddClientPanel.styled';
+import {getCliettModalInitialData} from '../../../utils/clients';
 
 
 const TYPES = {
@@ -14,20 +15,10 @@ const TYPES = {
 };
 
 
-const AddClientPanel = ({onClose}) => {
+const AddClientPanel = ({onClose, dataItem, searchValue}) => {
     const dispatch = useDispatch();
 
-    const [fields, setFields] = useState({
-        type: TYPES.entity,
-        name: '',
-        address: '',
-        legalAddress: '',
-        inn: '',
-        kpp: '',
-        ogrn: '',
-        carInfo: [],
-        contactInfo: [],
-    });
+    const [fields, setFields] = useState(getCliettModalInitialData(dataItem, TYPES));
 
     const onChange = (name, value) => {
         setFields({
@@ -50,7 +41,9 @@ const AddClientPanel = ({onClose}) => {
     };
 
     const onSave = () => {
-        dispatch(createClient(fields));
+        dataItem
+            ? dispatch(updateClient(fields, searchValue))
+            : dispatch(createClient(fields, searchValue));
         onClose();
     };
 

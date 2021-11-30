@@ -13,6 +13,7 @@ const ApplicationsPage = () => {
     const applicationsList = useSelector(state => state.applications.applicationsList);
     const applicationDetails = useSelector(state => state.applications.applicationDetails);
 
+    const [searchValue, setSearchValue] = useState('');
     const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
 
     useEffect(() => {
@@ -29,17 +30,21 @@ const ApplicationsPage = () => {
         <>
             {isNewApplicationModalOpen && (
                 <ExtendedApplicationPanel
+                    searchValue={searchValue}
                     isNew={true}
                     onClose={() => setIsNewApplicationModalOpen(false)}
                 />
             )}
             {!!applicationDetails && (
                 <ExtendedApplicationPanel
+                    searchValue={searchValue}
                     applicationDetails={applicationDetails}
                     onClose={() => dispatch(setApplicationDetails(null))}
                 />
             )}
             <ListPageWrapper
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
                 addButtonLabel="Добавить заявку"
                 onAddClick={() => {setIsNewApplicationModalOpen(true)}}
                 searchPlaceholder="Поиск по контрагенту"

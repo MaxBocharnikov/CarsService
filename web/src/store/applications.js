@@ -65,26 +65,28 @@ export const fetchApplicationsByDate = () => async (dispatch, getState) => {
     }
 };
 
-export const updateApplication = (application) => async dispatch => {
+export const updateApplication = (application, query) => async dispatch => {
     try {
         dispatch(setLoading(true));
         await ApplicationsApi.updateApplications(mapFromApplicationToUpdatingApplication(application));
-        dispatch(fetchApplicationsByDate());
+        query === undefined
+            ? dispatch(fetchApplicationsByDate())
+            : dispatch(fetchApplications(query))
     } catch(e) {
         console.error(e);
-        dispatch(setError('Something went wrong'));
+        dispatch(setError(e));
         dispatch(fetchApplicationsByDate());
     } finally {
         dispatch(setLoading(false));
     }
 };
 
-export const createApplication = (application, toEdit, isListPage) => async dispatch => {
+export const createApplication = (application, toEdit, query) => async dispatch => {
     try {
         dispatch(setLoading(true));
         const {result} = await ApplicationsApi.createApplications(application);
-        isListPage
-        ? dispatch(fetchApplications())
+        typeof query === undefined
+        ? dispatch(fetchApplications(query))
         : dispatch(fetchApplicationsByDate());
         if (toEdit) {
             dispatch(fetchApplicationDetails(result.id));
