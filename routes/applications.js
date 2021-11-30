@@ -1,11 +1,30 @@
 const {Router} = require('express');
 const {Types} = require('mongoose');
 const Application = require('../models/application');
+const Client = require('../models/client');
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.post('/list', async (req, res) => {
     try {
-        const applications = await Application.find();
+        const { query } = req.body;
+        const filter = {};
+        if (query) {
+            const client = await Client.findOne({
+                "name": new RegExp(query, 'i')
+            });
+            if (client) {
+                filter["clientId"] = client.id
+            } else {
+                res.status(200).json([]);
+                return;
+            }
+        }
+        const applications = await Application.find(filter)
+        .populate('clientId')
+        .populate('trailersIds')
+        .populate('works')
+        .populate('parts')
+        .exec()
         res.status(200).json(applications);
     } catch(e) {
         console.log(e);

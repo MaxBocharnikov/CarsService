@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {getApplicationTimeFromFields} from '../applications';
 
 export const mapFromApplicationToTimeLineApplication = (applicationDto) => {
@@ -49,5 +50,17 @@ export const mapFromApplicationToExtendedUpdateApplication = (id, fields) => {
         works: fields.works,
         parts: fields.parts,
         sum: fields.sum,
+    }
+};
+
+export const mapFromApplicationToApplicationPageTableData = (application) => {
+    return {
+        id: application.id,
+        number: application.id.slice(application.id.length - 3),
+        date: moment(application.startDate).format('DD.MM.YYYY'),
+        client: application.clientId ? application.clientId.name : '',
+        trailer: application.trailersIds ?  application.trailersIds[0].name : '',
+        sum: application.sum,
+        contacts: application.contactName || '' + '-' + application.contactInfo || '',
     }
 };

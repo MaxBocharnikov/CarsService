@@ -11,6 +11,9 @@ import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import MainPage from './pages/MainPage/MainPage';
 import Header from './components/Header/Header';
+import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
+
+const { Content } = Layout;
 
 const initialGroups = [
     { id: 1, title: 'Пост 1' },
@@ -56,12 +59,18 @@ const App = () => {
           <S.GlobalStyle />
           <Router>
             <Header />
-            <Routes>
-                <Route
-                    path="/"
-                    element={<MainPage/>}
-                />
-              </Routes>
+            <Content>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<MainPage/>}
+                    />
+                    <Route
+                        path="/applications"
+                        element={<ApplicationsPage/>}
+                    />
+                  </Routes>
+            </Content>
           </Router>
       </Layout>
   )

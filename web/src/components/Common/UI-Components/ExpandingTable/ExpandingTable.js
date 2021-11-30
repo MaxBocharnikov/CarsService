@@ -90,7 +90,8 @@ const ExpandingTable = ({
    onBlur,
    onFocus,
    getSum,
-   placeholder
+   placeholder,
+   noSearch
 }) => {
 
     const handleSave = row => {
@@ -121,7 +122,7 @@ const ExpandingTable = ({
 
     return (
         <S.Wrapper>
-            <Select
+            {!noSearch && <Select
                 value={null}
                 onChange={(value) => onSelect(value)}
                 data={selectorOptions}
@@ -130,7 +131,7 @@ const ExpandingTable = ({
                 onFocus={onFocus}
                 onBlur={onBlur}
                 placeholder={placeholder}
-            />
+            />}
             <S._Table
               components={{
                   body: {

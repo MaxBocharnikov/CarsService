@@ -36,10 +36,10 @@ const applications = createSlice({
     }
 });
 
-export const fetchApplications = () => async dispatch => {
+export const fetchApplications = (query) => async dispatch => {
     try {
         dispatch(setLoading(true));
-        const applications = await ApplicationsApi.fetchApplications();
+        const applications = await ApplicationsApi.fetchApplications(query);
         dispatch(setApplicationsList(applications));
     } catch(e) {
         console.error(e);
@@ -79,12 +79,13 @@ export const updateApplication = (application) => async dispatch => {
     }
 };
 
-export const createApplication = (application, toEdit) => async dispatch => {
+export const createApplication = (application, toEdit, isListPage) => async dispatch => {
     try {
-        console.log(toEdit)
         dispatch(setLoading(true));
         const {result} = await ApplicationsApi.createApplications(application);
-        dispatch(fetchApplicationsByDate());
+        isListPage
+        ? dispatch(fetchApplications())
+        : dispatch(fetchApplicationsByDate());
         if (toEdit) {
             dispatch(fetchApplicationDetails(result.id));
         }

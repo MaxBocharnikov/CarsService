@@ -18,16 +18,18 @@ import {
     mapFromApplicationToCreateApplication,
     mapFromApplicationToExtendedUpdateApplication
 } from '../../../utils/mapping/applications';
-import {updateApplication} from '../../../store/applications';
+import {createApplication, updateApplication} from '../../../store/applications';
 import SumResult from './components/SumResult/SumResult';
 import AddIcon from '../../Common/UI-Components/Icons/AddIcon';
 import S from './ApplicationPanel.styled';
 import AddClientPanel from '../../Common/AddClientPanel/AddClientPanel';
 import AddTrailer from '../../Common/AddTrailerPanel/AddTrailerPanel';
+import {fetchPosts} from '../../../store/posts';
 
 const ExtendedApplicationPanel = ({
   onClose,
-  applicationDetails
+  applicationDetails,
+  isNew,
 }) => {
     const dispatch = useDispatch();
 
@@ -69,8 +71,10 @@ const ExtendedApplicationPanel = ({
         !fields.trailers.length
 
     const onSave = () => {
-        const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails.id,fields);
-        dispatch(updateApplication(mapped));
+        const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails?.id,fields);
+        isNew
+            ? dispatch(createApplication(mapped, false, true))
+            : dispatch(updateApplication(mapped));
         onClose();
     };
 
@@ -80,6 +84,7 @@ const ExtendedApplicationPanel = ({
         dispatch(fetchWorkingHours());
         dispatch(fetchWorks());
         dispatch(fetchParts());
+        dispatch(fetchPosts());
     }, []);
 
     useEffect(() => {
@@ -92,7 +97,7 @@ const ExtendedApplicationPanel = ({
         onChange('sum', +worksSum + +partsSum);
     }, [JSON.stringify(fields.works), JSON.stringify(fields.parts)]);
 
-    if (!clients.length || !trailers.length || !works.length || !parts.length) return null;
+    if (!clients.length || !trailers.length || !works.length || !parts.length || !posts.length) return null;
 
     return (
         <>

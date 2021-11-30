@@ -20,6 +20,20 @@ export const getDefaultFieldData = ({startDate, endDate, group}) => {
 };
 
 export const getExtendedFieldsData = (applicationDetails, workingHours) => {
+    if (!applicationDetails) return {
+        client: '',
+        name: '',
+        phone: '',
+        description: '',
+        date: '',
+        time:'',
+        post: '',
+        trailers: [],
+        workingHourId: '',
+        works: [],
+        parts: [],
+        sum: '',
+    };
     const {clientId, contactName, contactPhone, description, startDate, endDate, postId, trailersIds, workingHourId, works, parts, sum} = applicationDetails;
     return {
         client: clientId.id,

@@ -22,6 +22,16 @@ const _Header = styled(Header)`
         text-align: center;
         width: 100%;
         padding-top: 6px;
+        
+      &:hover, &:active {
+            background: ${colors.blue};
+            color: ${colors.white};
+      }
+    }
+    
+    .active {
+        background: ${colors.blue};
+        color: ${colors.white};
     }
 `;
 

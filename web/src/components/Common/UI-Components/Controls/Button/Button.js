@@ -25,7 +25,8 @@ const Button = ({
     onClick,
     type,
     role,
-    disabled
+    disabled,
+    className,
 }) => {
 
     const styles = getStyles(role);
@@ -36,6 +37,7 @@ const Button = ({
            onClick={onClick}
            styles={styles}
            disabled={disabled}
+           className={className}
        >
            {children}
        </S.StyledButton>

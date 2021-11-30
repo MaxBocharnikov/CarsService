@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { Layout } from 'antd';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
 import {
     fetchApplicationDetails,
@@ -22,8 +21,6 @@ const MainPage = () => {
 
     const [selectedCalendarDate, setSelectedCalendarDate] = useState(null);
     const [newApplicationDefaultData, setNewApplicationDefaultData] = useState(null);
-
-    const { Content } = Layout;
 
     const onApplicationChange = useCallback((newItem) => {
         const newApplications = applications.map(a => {
@@ -51,6 +48,13 @@ const MainPage = () => {
         dispatch(fetchApplicationsByDate());
     }, [dispatch, selectedDate]);
 
+
+    useEffect(() => {
+        return () => {
+            dispatch(setApplicationsList([]));
+        };
+    }, []);
+
     if (!posts.length) return null;
 
     return (
@@ -67,23 +71,21 @@ const MainPage = () => {
                 onClose={() => dispatch(setApplicationDetails(null))}
             />
         )}
-         <Content>
-             <SelectedDate
-                 selectedDate={selectedDate}
-                 onCalendarSelect={onCalendarSelect}
-             />
-             <TimeLinePicker
-                 selectedDate={selectedDate}
-                 groups={posts}
-                 applications={applications}
-                 items={applications.map(mapFromApplicationToTimeLineApplication)}
-                 setItems={onApplicationChange}
-                 onChangeDate={onChangeDate}
-                 selectedCalendarDate={selectedCalendarDate}
-                 setNewApplicationDefaultDataMemo={setNewApplicationDefaultDataMemo}
-                 onApplicationOpen={(id) => dispatch(fetchApplicationDetails(id))}
-             />
-         </Content>
+            <SelectedDate
+                selectedDate={selectedDate}
+                onCalendarSelect={onCalendarSelect}
+            />
+            <TimeLinePicker
+                selectedDate={selectedDate}
+                groups={posts}
+                applications={applications}
+                items={applications.map(mapFromApplicationToTimeLineApplication)}
+                setItems={onApplicationChange}
+                onChangeDate={onChangeDate}
+                selectedCalendarDate={selectedCalendarDate}
+                setNewApplicationDefaultDataMemo={setNewApplicationDefaultDataMemo}
+                onApplicationOpen={(id) => dispatch(fetchApplicationDetails(id))}
+            />
         </>
     )
 };

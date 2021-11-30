@@ -6,14 +6,17 @@ const Input = ({
    value,
    onChange,
    width,
+   placeholder,
+   className,
 }) => {
     return (
-        <S.Wrapper width={width}>
+        <S.Wrapper width={width} className={className}>
             <S.Label>{label}</S.Label>
             <S.StyledInput
                 type="text"
                 value={value}
                 onChange={e => onChange(e.target.value)}
+                placeholder={placeholder}
             />
         </S.Wrapper>
     )
