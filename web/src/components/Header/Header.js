@@ -11,6 +11,7 @@ const Header = () => {
             <NavLink activeClassName="active" to="/parts">Запчасти</NavLink>
             <NavLink activeClassName="active" to="/clients">Контрагенты</NavLink>
             <NavLink activeClassName="active" to="/trailers">ТС</NavLink>
+            <NavLink activeClassName="active" to="/works">Работы</NavLink>
         </S._Header>
     )
 };

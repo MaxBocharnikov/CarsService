@@ -14,6 +14,8 @@ import Header from './components/Header/Header';
 import ApplicationsPage from './pages/ApplicationsPage/ApplicationsPage';
 import ClientsPage from './pages/ClientsPage/ClientsPage';
 import TrailersPage from './pages/TrailersPage/TrailersPage';
+import PartsPage from './pages/PartsPage/PartsPage';
+import WorksPage from './pages/WorksPage/WorksPage';
 
 const { Content } = Layout;
 
@@ -78,6 +80,14 @@ const App = () => {
                     <Route
                         path="/trailers"
                         element={<TrailersPage/>}
+                    />
+                    <Route
+                        path="/parts"
+                        element={<PartsPage/>}
+                    />
+                    <Route
+                        path="/works"
+                        element={<WorksPage/>}
                     />
                   </Routes>
             </Content>

@@ -6,6 +6,7 @@ const partSchema = new BaseSchema({
     name: {type: String, required: true},
     price: {type: Number, required: true},
     quantity: {type: Number, required: true},
+    reserved: {type: Number},
 });
 
 module.exports = model('Part', partSchema);

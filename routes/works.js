@@ -18,7 +18,10 @@ router.post('/list', async (req, res) => {
     try {
         const { query } = req.body;
         const works = await Work.find({
-            "name": new RegExp(query, 'i')
+            $or: [
+                {"name": new RegExp(query, 'i')},
+                {"number": new RegExp(query, 'i')}
+            ],
         });
         res.status(200).json(works);
     } catch(e) {

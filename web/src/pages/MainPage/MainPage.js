@@ -12,6 +12,9 @@ import SelectedDate from '../../components/MainPage/SelectedDate/SelectedDate';
 import ApplicationPanel from '../../components/MainPage/ApplicationPanel/ApplicationPanel';
 import ExtendedApplicationPanel from '../../components/MainPage/ApplicationPanel/ExtendedApplicationPanel';
 import {setClientsList} from '../../store/clients';
+import {setTrailersList} from '../../store/trailers';
+import {setParts} from '../../store/parts';
+import {setWorks} from '../../store/works';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -54,6 +57,9 @@ const MainPage = () => {
         return () => {
             dispatch(setApplicationsList([]));
             dispatch(setClientsList([]));
+            dispatch(setTrailersList([]));
+            dispatch(setParts([]));
+            dispatch(setWorks([]));
         };
     }, []);
 
