@@ -6,4 +6,16 @@ export default class Parts {
         const response = await HttpClient.call('post',`${_BASE_URL}/parts/list`, {query: query || ''});
         return response.data;
     };
+
+    static createPart = async (part) => {
+        const response = await HttpClient.call('post',`${_BASE_URL}/parts`, part);
+        return response.data;
+    };
+
+    static updatePart = async (part) => {
+        const response = await HttpClient.call('put',`${_BASE_URL}/parts`, part);
+        return response.data;
+    };
+
+
 }

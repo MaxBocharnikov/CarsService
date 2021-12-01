@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchParts, setParts} from '../../store/parts';
 import ListPageWrapper from '../../components/Common/UI-Components/ListPageWrapper/ListPageWrapper';
+import AddPartPanel from '../../components/Common/AddPartPanel/AddPartPanel';
 
 const PartsPage = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,19 @@ const PartsPage = () => {
 
     return (
         <>
+            {isAddPartPanelOpen && (
+                <AddPartPanel
+                    onClose={() => setIsAddPartPanelOpen(false)}
+                    searchValue={searchValue}
+                />
+            )}
+            {!!dataItem && (
+                <AddPartPanel
+                    onClose={() => setDataItem(null)}
+                    dataItem={dataItem}
+                    searchValue={searchValue}
+                />
+            )}
             <ListPageWrapper
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}

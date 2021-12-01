@@ -33,18 +33,54 @@ router.post('/list', async (req, res) => {
 });
 
 router.post('/',  async (req, res) => {
-    const part = new Part({
-        number: '12045',
-        name: 'Катушка',
-        price: 2500,
-        quantity: 12,
-    });
-
     try {
+        const {
+            name,
+            number,
+            prefix,
+            price,
+            markUp,
+            retailPrice,
+            category,
+            measure,
+            quantity,
+         } = req.body;
+
+        const part = new Part({
+            name,
+            number,
+            prefix,
+            price,
+            markUp,
+            retailPrice,
+            category,
+            measure,
+            quantity,
+            reserved: 0,
+        });
         const result = await part.save();
         res.status(201).json({result})
     } catch(e) {
         console.log(e)
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
+router.put('/', async (req, res) => {
+    try {
+        const part = await Part.findById(req.body.id);
+        if (!part) {
+            res.status(400).json({message: 'Part not found'});
+            return;
+        }
+        delete req.body._id;
+        Object.assign(part, req.body);
+        await part.save();
+        res.status(200).json();
+    } catch(e) {
+        console.log(e);
         res.status(500).json({
             message: 'Server error'
         })
