@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ListPageWrapper from '../../components/Common/UI-Components/ListPageWrapper/ListPageWrapper';
 import {fetchWorks, setWorks} from '../../store/works';
+import AddWorkPanel from '../../components/Common/AddWorkPanel/AddWorkPanel';
 
 const WorksPage = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,19 @@ const WorksPage = () => {
 
     return (
         <>
+        {isAddWorkPanelOpen && (
+            <AddWorkPanel
+                onClose={() => setIsAddWorkPanelOpen(false)}
+                searchValue={searchValue}
+            />
+        )}
+        {!!dataItem && (
+            <AddWorkPanel
+                onClose={() => setDataItem(null)}
+                dataItem={dataItem}
+                searchValue={searchValue}
+            />
+        )}
         <ListPageWrapper
             searchValue={searchValue}
             setSearchValue={setSearchValue}

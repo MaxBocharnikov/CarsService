@@ -33,16 +33,42 @@ router.post('/list', async (req, res) => {
 });
 
 router.post('/',  async (req, res) => {
-    const work = new Work({
-        name: 'Считывание кодов на исправление',
-        time: 1,
-    });
-
     try {
+        const {
+            name,
+            shortName,
+            number,
+            time,
+        } = req.body;
+        const work = new Work({
+            name,
+            shortName,
+            number,
+            time,
+        });
         const result = await work.save();
         res.status(201).json({result})
     } catch(e) {
         console.log(e)
+        res.status(500).json({
+            message: 'Server error'
+        })
+    }
+});
+
+router.put('/', async (req, res) => {
+    try {
+        const work = await Work.findById(req.body.id);
+        if (!work) {
+            res.status(400).json({message: 'Work not found'});
+            return;
+        }
+        delete req.body._id;
+        Object.assign(work, req.body);
+        await work.save();
+        res.status(200).json();
+    } catch(e) {
+        console.log(e);
         res.status(500).json({
             message: 'Server error'
         })

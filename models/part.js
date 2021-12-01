@@ -2,9 +2,12 @@ const { model} = require('mongoose');
 const BaseSchema = require('./baseSchema');
 
 const partSchema = new BaseSchema({
-    number: {type: String, required: true},
     name: {type: String, required: true},
+    number: {type: String, required: true},
+    numberZN: {type: String},
+    prefix: {type: String},
     price: {type: Number, required: true},
+    retailPrice: {type: Number},
     quantity: {type: Number, required: true},
     reserved: {type: Number},
 });

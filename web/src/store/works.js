@@ -35,5 +35,32 @@ export const fetchWorks = (v) => async dispatch => {
     }
 };
 
+export const createWork = (work, query) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await Works.createWork(work);
+        if (query !== undefined) dispatch(fetchWorks(query));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
+export const updateWork = (work, query) => async dispatch => {
+    try {
+        dispatch(setLoading(true));
+        await Works.updateWork(work);
+        dispatch(fetchWorks(query));
+    } catch(e) {
+        console.error(e);
+        dispatch(setError('Something went wrong'))
+    } finally {
+        dispatch(setLoading(false));
+    }
+};
+
+
 export const {setWorks, setLoading, setError} = works.actions;
 export default works.reducer;
