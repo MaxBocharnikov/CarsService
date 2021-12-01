@@ -9,12 +9,13 @@ import {
 import {fetchPosts} from '../../store/posts';
 import {mapFromApplicationToTimeLineApplication} from '../../utils/mapping/applications';
 import SelectedDate from '../../components/MainPage/SelectedDate/SelectedDate';
-import ApplicationPanel from '../../components/MainPage/ApplicationPanel/ApplicationPanel';
-import ExtendedApplicationPanel from '../../components/MainPage/ApplicationPanel/ExtendedApplicationPanel';
+import ApplicationPanel from '../../components/Common/ApplicationPanel/ApplicationPanel';
+import ExtendedApplicationPanel from '../../components/Common/ApplicationPanel/ExtendedApplicationPanel';
 import {setClientsList} from '../../store/clients';
 import {setTrailersList} from '../../store/trailers';
 import {setParts} from '../../store/parts';
 import {setWorks} from '../../store/works';
+import OrderPanel from '../../components/Common/OrderPanel/OrderPanel';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const MainPage = () => {
 
     const [selectedCalendarDate, setSelectedCalendarDate] = useState(null);
     const [newApplicationDefaultData, setNewApplicationDefaultData] = useState(null);
+    const [newOrderData, setNewOrderData] = useState(null);
 
     const onApplicationChange = useCallback((newItem) => {
         const newApplications = applications.map(a => {
@@ -77,6 +79,14 @@ const MainPage = () => {
             <ExtendedApplicationPanel
                 applicationDetails={applicationDetails}
                 onClose={() => dispatch(setApplicationDetails(null))}
+                setNewOrderData={setNewOrderData}
+            />
+        )}
+        {!!newOrderData && (
+            <OrderPanel
+                data={newOrderData}
+                onClose={() => setNewOrderData(null)}
+                isNew={true}
             />
         )}
             <SelectedDate

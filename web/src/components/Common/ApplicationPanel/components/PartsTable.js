@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpandingTable from '../../../Common/UI-Components/ExpandingTable/ExpandingTable';
+import ExpandingTable from '../../UI-Components/ExpandingTable/ExpandingTable';
 import {mapFromPartToApplicationPart} from '../../../../utils/applications';
 
 const PartsTable = ({
@@ -9,6 +9,7 @@ const PartsTable = ({
  onSearch,
  onFocus,
  onBlur,
+ isRecommendation
  }) => {
     return (
         <ExpandingTable
@@ -46,11 +47,11 @@ const PartsTable = ({
                     key: 'sum',
                 },
             ]}
-            data={fields.parts}
+            data={isRecommendation ? fields.recommendedParts : fields.parts}
             onChange={onChange}
             selectorOptions={parts.map(w => ({value: w.id, label: w.name}))}
             onSearch={onSearch}
-            onSelect={(v) => onChange([...fields.parts, mapFromPartToApplicationPart(v, parts)])}
+            onSelect={(v) => onChange([...isRecommendation ? fields.recommendedParts : fields.parts, mapFromPartToApplicationPart(v, parts)])}
             onFocus={onFocus}
             onBlur={onBlur}
             getSum={row => +row.quantity * +row.price}

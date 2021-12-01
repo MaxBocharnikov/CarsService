@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpandingTable from '../../../Common/UI-Components/ExpandingTable/ExpandingTable';
+import ExpandingTable from '../../UI-Components/ExpandingTable/ExpandingTable';
 import {mapFromWorkToApplicationWork} from '../../../../utils/applications';
 
 const WorksTable = ({
@@ -10,6 +10,7 @@ const WorksTable = ({
  onFocus,
  onBlur,
  workingHours,
+isRecommendation
 }) => {
     return (
         <ExpandingTable
@@ -42,11 +43,11 @@ const WorksTable = ({
                     key: 'sum',
                 },
             ]}
-            data={fields.works}
+            data={isRecommendation ? fields.recommendedWorks : fields.works}
             onChange={onChange}
             selectorOptions={works.map(w => ({value: w.id, label: w.name}))}
             onSearch={onSearch}
-            onSelect={(v) => onChange([...fields.works, mapFromWorkToApplicationWork(v, works, workingHours, fields.workingHourId)])}
+            onSelect={(v) => onChange([...isRecommendation ? fields.recommendedWorks : fields.works, mapFromWorkToApplicationWork(v, works, workingHours, fields.workingHourId)])}
             onFocus={onFocus}
             onBlur={onBlur}
             getSum={row => +row.quantity * row.pricePerHour * row.time}

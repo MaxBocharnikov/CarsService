@@ -1,17 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import PanelWrapper from '../../Common/PanelWrapper/PanelWrapper';
-import Input from '../../Common/UI-Components/Controls/Input/Input';
-import Select from '../../Common/UI-Components/Controls/Selector/Selector';
+import PanelWrapper from '../PanelWrapper/PanelWrapper';
+import Input from '../UI-Components/Controls/Input/Input';
+import Select from '../UI-Components/Controls/Selector/Selector';
 import {fetchClients} from '../../../store/clients';
 import {fetchTrailers} from '../../../store/trailers';
-import MaskedInput from '../../Common/UI-Components/Controls/Input/MaskedInput';
+import MaskedInput from '../UI-Components/Controls/Input/MaskedInput';
 import { getExtendedFieldsData } from '../../../utils/applications';
 import {fetchWorkingHours} from '../../../store/workingHours';
 import {fetchWorks} from '../../../store/works';
 import {fetchParts} from '../../../store/parts';
-import Switcher from '../../Common/UI-Components/Switcher/Switcher';
-import ExpandingTable from '../../Common/UI-Components/ExpandingTable/ExpandingTable';
+import Switcher from '../UI-Components/Switcher/Switcher';
+import ExpandingTable from '../UI-Components/ExpandingTable/ExpandingTable';
 import WorksTable from './components/WorksTable';
 import PartsTable from './components/PartsTable';
 import {
@@ -20,10 +20,10 @@ import {
 } from '../../../utils/mapping/applications';
 import {createApplication, updateApplication} from '../../../store/applications';
 import SumResult from './components/SumResult/SumResult';
-import AddIcon from '../../Common/UI-Components/Icons/AddIcon';
+import AddIcon from '../UI-Components/Icons/AddIcon';
 import S from './ApplicationPanel.styled';
-import AddClientPanel from '../../Common/AddClientPanel/AddClientPanel';
-import AddTrailer from '../../Common/AddTrailerPanel/AddTrailerPanel';
+import AddClientPanel from '../AddClientPanel/AddClientPanel';
+import AddTrailer from '../AddTrailerPanel/AddTrailerPanel';
 import {fetchPosts} from '../../../store/posts';
 
 const ExtendedApplicationPanel = ({
@@ -31,6 +31,7 @@ const ExtendedApplicationPanel = ({
   applicationDetails,
   isNew,
   searchValue,
+  setNewOrderData
 }) => {
     const dispatch = useDispatch();
 
@@ -71,11 +72,14 @@ const ExtendedApplicationPanel = ({
         !fields.client ||
         !fields.trailers.length
 
-    const onSave = () => {
-        const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails?.id,fields);
+    const onSave = (_, toOrder) => {
+        const mapped = mapFromApplicationToExtendedUpdateApplication(applicationDetails?.id, fields);
         isNew
             ? dispatch(createApplication(mapped, false, searchValue))
             : dispatch(updateApplication(mapped, searchValue));
+        if (toOrder && setNewOrderData && applicationDetails) {
+            setNewOrderData({...mapped, applicationId: applicationDetails.id});
+        }
         onClose();
     };
 
@@ -119,7 +123,7 @@ const ExtendedApplicationPanel = ({
                     {
                         id: 2,
                         text: 'Заказ наряд',
-                        onClick: onClose,
+                        onClick: (_) => onSave(_, true),
                         disabled: disabled
                     }
                 ]}

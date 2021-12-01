@@ -7,6 +7,7 @@ import trailers from './trailers';
 import workingHours from './workingHours';
 import works from './works';
 import parts from './parts';
+import orders from './orders';
 
 
 const reducer = combineReducers({
@@ -17,6 +18,7 @@ const reducer = combineReducers({
     workingHours,
     works,
     parts,
+    orders,
 });
 
 const store = configureStore({

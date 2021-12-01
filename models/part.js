@@ -11,7 +11,7 @@ const partSchema = new BaseSchema({
     category: {type: String, required: true},
     measure: {type: String, required: true},
     quantity: {type: Number, required: true},
-    reserved: {type: Number, required: true},
+    reserved: {type: Number},
 });
 
 module.exports = model('Part', partSchema);

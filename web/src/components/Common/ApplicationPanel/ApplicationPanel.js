@@ -1,19 +1,19 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import PanelWrapper from '../../Common/PanelWrapper/PanelWrapper';
-import Input from '../../Common/UI-Components/Controls/Input/Input';
-import Select from '../../Common/UI-Components/Controls/Selector/Selector';
+import PanelWrapper from '../PanelWrapper/PanelWrapper';
+import Input from '../UI-Components/Controls/Input/Input';
+import Select from '../UI-Components/Controls/Selector/Selector';
 import {fetchClients} from '../../../store/clients';
 import {fetchTrailers} from '../../../store/trailers';
-import MaskedInput from '../../Common/UI-Components/Controls/Input/MaskedInput';
+import MaskedInput from '../UI-Components/Controls/Input/MaskedInput';
 import {mapFromApplicationToCreateApplication} from '../../../utils/mapping/applications';
 import {getDefaultFieldData} from '../../../utils/applications';
 import {createApplication} from '../../../store/applications';
-import AddIcon from '../../Common/UI-Components/Icons/AddIcon';
+import AddIcon from '../UI-Components/Icons/AddIcon';
 
 import S from './ApplicationPanel.styled';
-import AddClientPanel from '../../Common/AddClientPanel/AddClientPanel';
-import AddTrailer from '../../Common/AddTrailerPanel/AddTrailerPanel';
+import AddClientPanel from '../AddClientPanel/AddClientPanel';
+import AddTrailer from '../AddTrailerPanel/AddTrailerPanel';
 
 const ApplicationPanel = ({
     onClose,

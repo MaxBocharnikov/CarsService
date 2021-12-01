@@ -6,7 +6,7 @@ import {
 } from '../../store/applications';
 import ListPageWrapper from '../../components/Common/UI-Components/ListPageWrapper/ListPageWrapper';
 import {mapFromApplicationToApplicationPageTableData} from '../../utils/mapping/applications';
-import ExtendedApplicationPanel from '../../components/MainPage/ApplicationPanel/ExtendedApplicationPanel';
+import ExtendedApplicationPanel from '../../components/Common/ApplicationPanel/ExtendedApplicationPanel';
 
 const ApplicationsPage = () => {
     const dispatch = useDispatch();

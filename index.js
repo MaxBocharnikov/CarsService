@@ -10,6 +10,7 @@ const worksRouter = require('./routes/works');
 const partsRouter = require('./routes/parts');
 const postsRouter = require('./routes/posts');
 const workingHoursRouter = require('./routes/workingHours');
+const ordersRouter = require('./routes/order');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.options('*', function (req,res) { res.sendStatus(200); });
 
 app.use('/applications', applicationsRoutes);
+app.use('/orders', ordersRouter);
 app.use('/clients', clientsRouter);
 app.use('/clientTypes', clientTypesRouter);
 app.use('/trailers', trailersRouter);
