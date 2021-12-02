@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ExpandingTable from '../../UI-Components/ExpandingTable/ExpandingTable';
 import {mapFromPartToApplicationPart} from '../../../../utils/applications';
 
@@ -9,8 +9,13 @@ const PartsTable = ({
  onSearch,
  onFocus,
  onBlur,
- isRecommendation
+ isRecommendation,
+ isOrder,
+ onMove,
  }) => {
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const moveGoal = isRecommendation ? 'в запчасти ' : 'в реком. запчасти';
+    const buttonText = `Перенести ${moveGoal}`;
     return (
         <ExpandingTable
             columns={[
@@ -56,6 +61,11 @@ const PartsTable = ({
             onBlur={onBlur}
             getSum={row => +row.quantity * +row.price}
             placeholder="Добавить запчасть"
+            selectedRowKeys={isOrder ? selectedRowKeys : undefined}
+            setSelectedRowKeys={setSelectedRowKeys}
+            buttonText={buttonText}
+            onMove={onMove ? () => onMove(selectedRowKeys) : undefined}
+            id='partId'
         />
     )
 };

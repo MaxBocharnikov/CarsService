@@ -18,6 +18,7 @@ export const mapFromOrderToOrderDto = (id, fields) => {
         recommendationDescription: fields.recommendationDescription,
         recommendedWorks: fields.recommendedWorks,
         recommendedParts: fields.recommendedParts,
+        status: fields.status,
     }
 };
 

@@ -19,6 +19,17 @@ import PartsTable from '../ApplicationPanel/components/PartsTable';
 import SumResult from '../ApplicationPanel/components/SumResult/SumResult';
 import {createOrder, updateOrder} from '../../../store/orders';
 
+
+const STATUS_OPTIONS = [
+    {label: 'Заявка', value: 'application'},
+    {label: 'В работе', value: 'work'},
+    {label: 'Согласование', value: 'mathing'},
+    {label: 'Ожидание з/ч', value: 'waiting'},
+    {label: 'Все детали поступили', value: 'entered'},
+    {label: 'Выполнен', value: 'resolved'},
+    {label: 'Закрыт', value: 'closed'},
+];
+
 const OrderPanel = ({
    onClose,
    data,
@@ -60,7 +71,8 @@ const OrderPanel = ({
         fields.time.length !== 11 ||
         !fields.post ||
         !fields.client ||
-        !fields.trailers.length
+        !fields.trailers.length ||
+        !fields.status
 
     const onSave = () => {
         const id = isNew ? undefined : data.id;
@@ -96,8 +108,34 @@ const OrderPanel = ({
         onChange('recommendedSum', +worksSum + +partsSum);
     }, [JSON.stringify(fields.recommendedWorks), JSON.stringify(fields.recommendedParts)]);
 
-    if (!clients.length || !trailers.length || !works.length || !parts.length || !posts.length) return null;
 
+
+    const onWorkMove = (keys) => {
+        const ids = keys.map(k => k.slice(0, -1));
+        const works = fields.works.filter(w => ids.includes(w.workId));
+        onChange('recommendedWorks', [...fields.recommendedWorks, ...works])
+    };
+
+    const onRecommendedWorkMove = (keys) => {
+        const ids = keys.map(k => k.slice(0, -1));
+        const works = fields.recommendedWorks.filter(w => ids.includes(w.workId));
+        onChange('works', [...fields.works, ...works])
+    };
+
+    const onPartMove = (keys) => {
+        const ids = keys.map(k => k.slice(0, -1));
+        const parts = fields.parts.filter(p => ids.includes(p.partId));
+        onChange('recommendedParts', [...fields.recommendedParts, ...parts])
+    };
+
+    const onRecommendedPartMove = (keys) => {
+        const ids = keys.map(k => k.slice(0, -1));
+        const parts = fields.recommendedParts.filter(p => ids.includes(p.partId));
+        onChange('parts', [...fields.parts, ...parts])
+    };
+
+
+    if (!clients.length || !trailers.length || !works.length || !parts.length || !posts.length) return null;
     return (
         <>
         <PanelWrapper
@@ -210,6 +248,15 @@ const OrderPanel = ({
                 onFocus={() => setIsOutlineHandlerDisable(true)}
                 onBlur={() => setIsOutlineHandlerDisable(false)}
             />
+            <Select
+                label="Статус"
+                value={fields.status}
+                onChange={(value) => onChange('status', value)}
+                width="25%"
+                data={STATUS_OPTIONS}
+                onFocus={() => setIsOutlineHandlerDisable(true)}
+                onBlur={() => setIsOutlineHandlerDisable(false)}
+            />
             <Switcher
                 selectedValue={selectedOptionType}
                 options={[
@@ -226,6 +273,8 @@ const OrderPanel = ({
                     onFocus={() => setIsOutlineHandlerDisable(true)}
                     onBlur={() => setIsOutlineHandlerDisable(false)}
                     workingHours={workingHours}
+                    isOrder
+                    onMove={(items) => onWorkMove(items)}
                 />
             ) : (
                 <PartsTable
@@ -235,6 +284,8 @@ const OrderPanel = ({
                     onSearch={(v) => dispatch(fetchParts(v))}
                     onFocus={() => setIsOutlineHandlerDisable(true)}
                     onBlur={() => setIsOutlineHandlerDisable(false)}
+                    isOrder
+                    onMove={(items) => onPartMove(items)}
                 />
             )}
             <SumResult fields={fields}/>
@@ -262,6 +313,8 @@ const OrderPanel = ({
                     onBlur={() => setIsOutlineHandlerDisable(false)}
                     workingHours={workingHours}
                     isRecommendation
+                    isOrder
+                    onMove={(items) => onRecommendedWorkMove(items)}
                 />
             ) : (
                 <PartsTable
@@ -272,6 +325,8 @@ const OrderPanel = ({
                     onFocus={() => setIsOutlineHandlerDisable(true)}
                     onBlur={() => setIsOutlineHandlerDisable(false)}
                     isRecommendation
+                    isOrder
+                    onMove={(items) => onRecommendedPartMove(items)}
                 />
             )}
             <SumResult fields={fields} isRecommendation/>

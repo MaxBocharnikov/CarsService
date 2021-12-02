@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ExpandingTable from '../../UI-Components/ExpandingTable/ExpandingTable';
 import {mapFromWorkToApplicationWork} from '../../../../utils/applications';
 
@@ -10,8 +10,13 @@ const WorksTable = ({
  onFocus,
  onBlur,
  workingHours,
-isRecommendation
+ isRecommendation,
+ isOrder,
+ onMove
 }) => {
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const moveGoal = isRecommendation ? 'в услуги ' : 'в рекомен услуги';
+    const buttonText = `Перенести ${moveGoal}`;
     return (
         <ExpandingTable
             columns={[
@@ -52,6 +57,11 @@ isRecommendation
             onBlur={onBlur}
             getSum={row => +row.quantity * row.pricePerHour * row.time}
             placeholder="Добавить услугу"
+            selectedRowKeys={isOrder ? selectedRowKeys : undefined}
+            setSelectedRowKeys={setSelectedRowKeys}
+            buttonText={buttonText}
+            onMove={onMove ? () => onMove(selectedRowKeys) : undefined}
+            id='workId'
         />
     )
 };

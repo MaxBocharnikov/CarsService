@@ -12,6 +12,7 @@ const orderSchema = new BaseSchema({
     postId: {type: String, ref: 'Post', required: true},
     startDate: {type: String, required: true},
     endDate: {type: String, required: true},
+    status: {type: String, required: true},
     works: [{
         workId: {type: BaseSchema.Types.ObjectId, ref: 'Work', required: true},
         name: {type: String, required: true},

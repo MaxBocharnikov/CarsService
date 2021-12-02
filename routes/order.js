@@ -75,6 +75,7 @@ router.post('/',  async (req, res) => {
             recommendedParts,
             recommendationSum,
             applicationId,
+            status,
         } = req.body;
 
         const order = new Order({
@@ -94,6 +95,7 @@ router.post('/',  async (req, res) => {
             recommendedParts,
             recommendationSum,
             applicationId,
+            status,
             dateCreated: new Date().toLocaleString()
         });
         const result = await order.save();

@@ -3,6 +3,7 @@ import { Input, Form } from 'antd';
 import 'antd/dist/antd.css';
 import S from './ExpandingTable.styled';
 import Select from '../Controls/Selector/Selector';
+import Button from '../Controls/Button/Button';
 
 const EditableContext = React.createContext(null);
 
@@ -91,7 +92,12 @@ const ExpandingTable = ({
    onFocus,
    getSum,
    placeholder,
-   noSearch
+   noSearch,
+   selectedRowKeys,
+   setSelectedRowKeys,
+   buttonText,
+   onMove,
+   id,
 }) => {
 
     const handleSave = row => {
@@ -119,6 +125,18 @@ const ExpandingTable = ({
         };
     });
 
+    const selectRow = (record) => {
+        const selectedRowKeysCopy = [...selectedRowKeys];
+        if (selectedRowKeysCopy.indexOf(record.key) >= 0) {
+            selectedRowKeysCopy.splice(selectedRowKeysCopy.indexOf(record.key), 1);
+        } else {
+            selectedRowKeysCopy.push(record.key);
+        }
+        setSelectedRowKeys(selectedRowKeysCopy);
+    };
+    const onSelectedRowKeysChange = (selectedRowKeys) => {
+        setSelectedRowKeys(selectedRowKeys);
+    };
 
     return (
         <S.Wrapper>
@@ -132,6 +150,15 @@ const ExpandingTable = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
             />}
+            {onMove &&
+            <S.MoveButton
+                onClick={onMove}
+                role="primary"
+                disabled={!selectedRowKeys || !selectedRowKeys.length}
+            >
+                {buttonText}
+             </S.MoveButton>
+            }
             <S._Table
               components={{
                   body: {
@@ -139,9 +166,19 @@ const ExpandingTable = ({
                       row: EditableRow,
                   },
               }}
-              dataSource={data.map((d, index) => (d))}
+              dataSource={data.map((d, index) => ({...d, key: d[id] + index}))}
               columns={_columns}
               pagination={false}
+              rowSelection={selectedRowKeys
+              ? {
+                 selectedRowKeys,
+                 onChange: onSelectedRowKeysChange
+              } : undefined}
+              onRow={(record) => ({
+                  onClick: () => {
+                      selectRow(record);
+                  },
+              })}
             />
         </S.Wrapper>
     )
