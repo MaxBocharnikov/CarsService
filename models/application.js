@@ -18,7 +18,7 @@ const applicationSchema = new BaseSchema({
         time: {type: String, required: true},
         quantity: {type: Number, required: true},
         pricePerHour: {type: Number, required: true},
-        sum: {type: Number, required: true}
+        sum: {type: Number, required: true},
     }],
     parts: [{
         partId: {type: BaseSchema.Types.ObjectId, ref: 'Part', required: true},
@@ -27,7 +27,8 @@ const applicationSchema = new BaseSchema({
         remainers: {type: Number, required: true},
         price: {type: Number, required: true},
         sum: {type: Number, required: true},
-        number: {type: String, required: true}
+        number: {type: String, required: true},
+        reserved: {type: Number},
     }],
     dateCreated: {type: String, required: true},
     sum: {type: Number},

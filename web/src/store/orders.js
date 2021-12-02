@@ -61,8 +61,20 @@ export const createOrder = (order, query) => async dispatch => {
     try {
         dispatch(setLoading(true));
         await OrdersApi.createOrder(order);
-        dispatch(fetchOrders(query))
-        order.parts.forEach(p => dispatch(updatePart({...p, reserved: p.reserved ? p.reserved +1 : 1, id: p.partId})));
+        dispatch(fetchOrders(query));
+        const filteredParts = [];
+        order.parts.forEach(p => {
+            const index = filteredParts.findIndex(f => f.part.partId === p.partId);
+            if (index !== -1) {
+                filteredParts[index].count = filteredParts[index].count + +p.reserved;
+            } else {
+                filteredParts.push({part: p, count: +p.quantity + p.reserved})
+            }
+        });
+        filteredParts.forEach(filtered => dispatch(updatePart({...filtered.part, reserved: filtered.part.reserved
+            ? filtered.part.reserved + filtered.count
+            : filtered.count, id: filtered.part.partId
+        })));
     } catch(e) {
         console.error(e);
         dispatch(setError('Something went wrong'));

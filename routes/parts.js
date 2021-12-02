@@ -76,7 +76,9 @@ router.put('/', async (req, res) => {
             return;
         }
         delete req.body._id;
-        Object.assign(part, req.body);
+        Object.assign(part, {...req.body, reserved: req.body.reserved === 0
+            ? 0
+            : req.body.reserved + part.reserved});
         await part.save();
         res.status(200).json();
     } catch(e) {

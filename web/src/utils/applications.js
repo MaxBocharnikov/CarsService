@@ -77,5 +77,6 @@ export const mapFromPartToApplicationPart = (id, parts) => {
         remainers: foundPart.quantity,
         price: foundPart.price,
         sum: foundPart.price,
+        reserved: foundPart.reserved || 0,
     }
 }
