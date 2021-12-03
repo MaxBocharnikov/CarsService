@@ -3,8 +3,9 @@ const {Types} = require('mongoose');
 const Application = require('../models/application');
 const Client = require('../models/client');
 const router = Router();
+const auth = require('../middleware/auth');
 
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
     try {
         const { query } = req.body;
         const filter = {};
@@ -34,7 +35,7 @@ router.post('/list', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
         const application = await Application
             .findById(req.params.id)
@@ -52,7 +53,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/getByDate', async (req, res) => {
+router.post('/getByDate', auth, async (req, res) => {
     try {
         const { startDate, endDate } = req.body;
         const applications = await Application.find({
@@ -74,7 +75,7 @@ router.post('/getByDate', async (req, res) => {
     }
 });
 
-router.post('/',  async (req, res) => {
+router.post('/', auth,  async (req, res) => {
     const {
         clientId,
         trailersIds,
@@ -101,7 +102,8 @@ router.post('/',  async (req, res) => {
         endDate: endDate,
         works: works,
         parts: parts,
-        dateCreated: new Date().toLocaleString()
+        dateCreated: new Date().toLocaleString(),
+        userId: req.session.user,
     });
 
     try {
@@ -115,7 +117,7 @@ router.post('/',  async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
         const application = await Application.findById(req.body.id);
         if (!application) {
@@ -123,7 +125,7 @@ router.put('/', async (req, res) => {
             return;
         }
         delete req.body._id;
-        Object.assign(application, req.body);
+        Object.assign(application, {...req.body, userId: req.session.user});
         await application.save();
         res.status(200).json();
     } catch(e) {
@@ -134,7 +136,7 @@ router.put('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         await Application.deleteOne({_id: id});

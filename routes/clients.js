@@ -1,8 +1,9 @@
 const {Router} = require('express');
 const Client = require('../models/client');
 const router = Router();
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const clients = await Client.find().populate('typeId');
         res.status(200).json(clients);
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
     try {
         const { query } = req.body;
         const clients = await Client.find({
@@ -33,7 +34,7 @@ router.post('/list', async (req, res) => {
 });
 
 
-router.post('/',  async (req, res) => {
+router.post('/', auth,  async (req, res) => {
     try {
         const {
             type,
@@ -69,7 +70,7 @@ router.post('/',  async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
         const client = await Client.findById(req.body.id);
         if (!client) {

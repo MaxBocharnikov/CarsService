@@ -2,8 +2,9 @@ const {Router} = require('express');
 const {Types} = require('mongoose');
 const Trailer = require('../models/trailer');
 const router = Router();
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const trailers = await Trailer.find().populate('clientId');
         res.status(200).json({trailers});
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
     try {
         const { query } = req.body;
         const trailers = await Trailer.find({
@@ -35,7 +36,7 @@ router.post('/list', async (req, res) => {
 });
 
 
-router.post('/',  async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const {
             type,
@@ -74,7 +75,7 @@ router.post('/',  async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
         const trailer = await Trailer.findById(req.body.id);
         if (!trailer) {

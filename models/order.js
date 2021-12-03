@@ -53,7 +53,8 @@ const orderSchema = new BaseSchema({
         reserved: {type: Number},
     }],
     recommendedSum: {type: Number},
-    applicationId: {type: BaseSchema.Types.ObjectId, ref: 'Application'}
+    applicationId: {type: BaseSchema.Types.ObjectId, ref: 'Application'},
+    userId: {type: String, ref: 'User', required: true},
 });
 
 module.exports = model('Order', orderSchema);

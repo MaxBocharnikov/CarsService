@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const applicationsRoutes = require('./routes/applications');
 const clientsRouter = require('./routes/clients');
@@ -11,9 +12,17 @@ const partsRouter = require('./routes/parts');
 const postsRouter = require('./routes/posts');
 const workingHoursRouter = require('./routes/workingHours');
 const ordersRouter = require('./routes/order');
+const userRouter = require('./routes/user');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(session({
+    secret: 'secret key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+}))
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -22,6 +31,7 @@ res.setHeader('Access-Control-Allow-Headers', 'origin,X-Requested-With,accept,co
 res.setHeader('Access-Control-Allow-Credentials', true);
 next();
 });
+
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -36,6 +46,7 @@ app.use('/works', worksRouter);
 app.use('/parts', partsRouter);
 app.use('/posts', postsRouter);
 app.use('/workingHours', workingHoursRouter);
+app.use('/users', userRouter);
 
 async function start() {
     try {

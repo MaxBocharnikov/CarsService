@@ -1,9 +1,9 @@
 const {Router} = require('express');
 const Order = require('../models/order');
 const router = Router();
+const auth = require('../middleware/auth');
 
-
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
     try {
         const { query } = req.body;
         const filter = {};
@@ -36,7 +36,7 @@ router.post('/list', async (req, res) => {
 });
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
         const order = await Order
             .findById(req.params.id)
@@ -56,7 +56,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/',  async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const {
             clientId,
@@ -96,7 +96,8 @@ router.post('/',  async (req, res) => {
             recommendationSum,
             applicationId,
             status,
-            dateCreated: new Date().toLocaleString()
+            dateCreated: new Date().toLocaleString(),
+            userId: req.session.user,
         });
         const result = await order.save();
         res.status(201).json({result})
@@ -108,7 +109,7 @@ router.post('/',  async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
         const order = await Order.findById(req.body.id);
         if (!order) {
@@ -116,7 +117,7 @@ router.put('/', async (req, res) => {
             return;
         }
         delete req.body._id;
-        Object.assign(order, req.body);
+        Object.assign(order, {...req.body, userId: req.session.user,});
         await order.save();
         res.status(200).json();
     } catch(e) {

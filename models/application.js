@@ -32,6 +32,7 @@ const applicationSchema = new BaseSchema({
     }],
     dateCreated: {type: String, required: true},
     sum: {type: Number},
+    userId: {type: String, ref: 'User', required: true},
 });
 
 module.exports = model('Application', applicationSchema);

@@ -1,8 +1,9 @@
 const {Router} = require('express');
 const Part = require('../models/part');
 const router = Router();
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const parts = await Part.find();
         res.status(200).json(parts);
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/list', async (req, res) => {
+router.post('/list', auth, async (req, res) => {
     try {
         const { query } = req.body;
         const parts = await Part.find({
@@ -32,7 +33,7 @@ router.post('/list', async (req, res) => {
     }
 });
 
-router.post('/',  async (req, res) => {
+router.post('/', auth,  async (req, res) => {
     try {
         const {
             name,
@@ -68,7 +69,7 @@ router.post('/',  async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
         const part = await Part.findById(req.body.id);
         if (!part) {

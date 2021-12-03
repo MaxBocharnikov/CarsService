@@ -1,8 +1,9 @@
 const {Router} = require('express');
 const WorkingHour = require('../models/workingHour');
 const router = Router();
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const workingHours = await WorkingHour.find();
         res.status(200).json(workingHours);
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/',  async (req, res) => {
+router.post('/', auth,  async (req, res) => {
     const { title } = req.body;
     const workingHour = new WorkingHour({
         title
