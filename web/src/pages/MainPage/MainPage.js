@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import TimeLinePicker from '../../components/MainPage/TimeLinePicker/TimeLinePicker';
 import {
@@ -18,6 +18,7 @@ import {setWorks} from '../../store/works';
 import OrderPanel from '../../components/Common/OrderPanel/OrderPanel';
 
 const MainPage = () => {
+
     const dispatch = useDispatch();
     const selectedDate = useSelector(state => state.applications.selectedDate);
     const applications = useSelector(state => state.applications.applicationsList);
@@ -64,6 +65,7 @@ const MainPage = () => {
             dispatch(setWorks([]));
         };
     }, []);
+
 
     if (!posts.length) return null;
 

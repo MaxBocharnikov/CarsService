@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import { useReactToPrint } from 'react-to-print';
 import {useDispatch, useSelector} from 'react-redux';
 import PanelWrapper from '../PanelWrapper/PanelWrapper';
 import Input from '../UI-Components/Controls/Input/Input';
@@ -11,11 +12,9 @@ import {fetchWorkingHours} from '../../../store/workingHours';
 import {fetchWorks} from '../../../store/works';
 import {fetchParts} from '../../../store/parts';
 import Switcher from '../UI-Components/Switcher/Switcher';
-import ExpandingTable from '../UI-Components/ExpandingTable/ExpandingTable';
 import WorksTable from './components/WorksTable';
 import PartsTable from './components/PartsTable';
 import {
-    mapFromApplicationToCreateApplication,
     mapFromApplicationToExtendedUpdateApplication
 } from '../../../utils/mapping/applications';
 import {createApplication, updateApplication} from '../../../store/applications';
@@ -25,15 +24,18 @@ import S from './ApplicationPanel.styled';
 import AddClientPanel from '../AddClientPanel/AddClientPanel';
 import AddTrailer from '../AddTrailerPanel/AddTrailerPanel';
 import {fetchPosts} from '../../../store/posts';
+import ApplicationPanelToPrint from '../ApplicationPanelToPrint';
 
 const ExtendedApplicationPanel = ({
   onClose,
   applicationDetails,
   isNew,
   searchValue,
-  setNewOrderData
+  setNewOrderData,
 }) => {
     const dispatch = useDispatch();
+
+    const componentRef = useRef(null);
 
     const posts = useSelector(state => state.posts.postsList);
     const clients = useSelector(state => state.clients.clientsList);
@@ -83,6 +85,11 @@ const ExtendedApplicationPanel = ({
         onClose();
     };
 
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        copyStyles: true,
+    });
+
     useEffect(() => {
         dispatch(fetchClients());
         dispatch(fetchTrailers());
@@ -104,8 +111,21 @@ const ExtendedApplicationPanel = ({
 
     if (!clients.length || !trailers.length || !works.length || !parts.length || !posts.length) return null;
 
+
     return (
         <>
+        <div style={{ display: "none" }}>
+            <ApplicationPanelToPrint
+                ref={componentRef}
+                fields={fields}
+                posts={posts}
+                clients={clients}
+                trailers={trailers}
+                workingHours={workingHours}
+                works={works}
+                parts={parts}
+            />
+        </div>
         {isAddClientPanelOpen && <AddClientPanel onClose={() => setIsAddClientPanelOpen(false)}/>}
         {isAddTrailerPanelOpen && <AddTrailer onClose={() => setIsAddTrailerPanelOpen(false)}/>}
             <PanelWrapper
@@ -125,6 +145,11 @@ const ExtendedApplicationPanel = ({
                         text: 'Заказ наряд',
                         onClick: (_) => onSave(_, true),
                         disabled: disabled
+                    },
+                    {
+                        id: 3,
+                        text: 'Печать',
+                        onClick: () => handlePrint(),
                     }
                 ]}
                 isOutlineHandlerDisable={isOutlineHandlerDisable || isAddClientPanelOpen}

@@ -11,7 +11,8 @@ const PanelWrapper = ({
     isFullScreen,
     isOutlineHandlerDisable,
     children,
-    zIndex
+    zIndex,
+    isPrint
 }) => {
     return (
         <>
@@ -22,7 +23,7 @@ const PanelWrapper = ({
             >
                 <S.Wrapper isFullScreen={isFullScreen} zIndex={zIndex}>
                     <S.Title>{title}</S.Title>
-                    {isFullScreen && <S.CloseIconWrapper onClick={onClose}>
+                    {isFullScreen && !isPrint && <S.CloseIconWrapper onClick={onClose}>
                         <CloseIcon/>
                     </S.CloseIconWrapper> }
                     <S.Content>{children}</S.Content>

@@ -67,6 +67,14 @@ const GlobalStyle = createGlobalStyle`
     .ant-select-dropdown {
        z-index: 10009 !important;
      }
+     
+     
+     @media print {
+      .print {
+        display: block;
+      }
+}
+}
     
 `;
 

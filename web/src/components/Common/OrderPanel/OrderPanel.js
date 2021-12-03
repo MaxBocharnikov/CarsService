@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import { useReactToPrint } from 'react-to-print';
 import {useDispatch, useSelector} from 'react-redux';
 import PanelWrapper from '../PanelWrapper/PanelWrapper';
 import Input from '../UI-Components/Controls/Input/Input';
@@ -18,6 +19,7 @@ import WorksTable from '../ApplicationPanel/components/WorksTable';
 import PartsTable from '../ApplicationPanel/components/PartsTable';
 import SumResult from '../ApplicationPanel/components/SumResult/SumResult';
 import {createOrder, updateOrder} from '../../../store/orders';
+import ApplicationPanelToPrint from '../ApplicationPanelToPrint';
 
 
 const STATUS_OPTIONS = [
@@ -37,6 +39,8 @@ const OrderPanel = ({
    searchValue,
 }) => {
     const dispatch = useDispatch();
+
+    const componentRef = useRef(null);
 
     const posts = useSelector(state => state.posts.postsList);
     const clients = useSelector(state => state.clients.clientsList);
@@ -134,10 +138,26 @@ const OrderPanel = ({
         onChange('parts', [...fields.parts, ...parts])
     };
 
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        copyStyles: true,
+    });
 
     if (!clients.length || !trailers.length || !works.length || !parts.length || !posts.length) return null;
     return (
         <>
+        <div style={{ display: "none" }}>
+            <ApplicationPanelToPrint
+                ref={componentRef}
+                fields={fields}
+                posts={posts}
+                clients={clients}
+                trailers={trailers}
+                workingHours={workingHours}
+                works={works}
+                parts={parts}
+            />
+        </div>
         <PanelWrapper
             title="Заказ наряд"
             onClose={onClose}
@@ -149,6 +169,11 @@ const OrderPanel = ({
                     role: 'primary',
                     type: 'submit',
                     disabled: disabled
+                },
+                {
+                    id: 2,
+                    text: 'Печать',
+                    onClick: () => handlePrint(),
                 }
             ]}
             isOutlineHandlerDisable={isOutlineHandlerDisable}
