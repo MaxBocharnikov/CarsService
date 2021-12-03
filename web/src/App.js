@@ -17,6 +17,7 @@ import TrailersPage from './pages/TrailersPage/TrailersPage';
 import PartsPage from './pages/PartsPage/PartsPage';
 import WorksPage from './pages/WorksPage/WorksPage';
 import OrdersPage from './pages/OrdersPage/OrdersPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 
 const { Content } = Layout;
 
@@ -93,6 +94,10 @@ const App = () => {
                     <Route
                         path="/orders"
                         element={<OrdersPage/>}
+                    />
+                    <Route
+                        path="/login"
+                        element={<LoginPage/>}
                     />
                   </Routes>
             </Content>

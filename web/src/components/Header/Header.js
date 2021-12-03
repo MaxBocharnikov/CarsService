@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import S from './Header.styled';
 
 const Header = () => {
+    if (window.location.pathname === '/login') return null;
     return (
         <S._Header>
             <NavLink activeClassName="active" to="/">Календарь</NavLink>

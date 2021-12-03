@@ -15,7 +15,7 @@ const StyledButton = styled(Button)`
     border: ${props => props.styles.border};
     color: ${props => props.styles.color};
     
-    &:hover, &:active {
+    &:hover, &:active, &:focus {
       background: ${props => props.styles.background};
       border: ${props => props.styles.border};
       color: ${props => props.styles.color};   
