@@ -16,7 +16,7 @@ const ordersRouter = require('./routes/order');
 const userRouter = require('./routes/user');
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 5000;
 
 app.use(session({
     secret: 'secret key',
@@ -26,7 +26,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-res.setHeader('Access-Control-Allow-Origin', 'https://young-garden-30400.herokuapp.com/');
+res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 res.setHeader('Access-Control-Allow-Headers', 'origin,X-Requested-With,accept,content-type');
 res.setHeader('Access-Control-Allow-Credentials', true);

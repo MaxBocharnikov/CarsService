@@ -71,7 +71,7 @@ const AddClientPanel = ({onClose, dataItem, searchValue}) => {
                     selectedValue={fields.type}
                     options={[
                         {value: TYPES.entity, label: 'ЮР ЛИЦО', onClick: () => onChange('type', TYPES.entity)},
-                        {value: TYPES.individual, label: 'ЗАПЧАСТИ', onClick: () => onChange('type', TYPES.individual)},
+                        {value: TYPES.individual, label: 'ФИЗ ЛИЦО', onClick: () => onChange('type', TYPES.individual)},
                         {value: TYPES.entrepreneur, label: 'ИП', onClick: () => onChange('type', TYPES.entrepreneur)},
                     ]}
                 />

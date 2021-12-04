@@ -9,6 +9,7 @@ export const mapFromApplicationToTimeLineApplication = (applicationDto) => {
         start: applicationDto.startDate,
         end: applicationDto.endDate,
         clientId: applicationDto.clientId,
+        trailers: applicationDto.trailersIds,
     }
 };
 
@@ -16,7 +17,8 @@ export const mapFromApplicationToTimeLineApplication = (applicationDto) => {
 export const mapFromApplicationToUpdatingApplication= (application) => {
     return {
         ...application,
-        clientId: application.clientId.id
+        clientId: application.clientId.id,
+        trailersIds: application.trailersIds.map(t => t.id || t),
     }
 };
 

@@ -65,7 +65,8 @@ router.post('/getByDate', auth, async (req, res) => {
             startDate: 1,
             endDate: 1,
             postId: 1,
-        }).populate("clientId")
+            trailersIds: 1,
+        }).populate("clientId").populate('trailersIds')
         res.status(200).json(applications);
     } catch(e) {
         console.log(e);

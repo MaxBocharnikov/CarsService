@@ -29,7 +29,7 @@ const itemRenderer = ({item, itemContext, getItemProps, getResizeProps}) => {
                 className="rct-item-content"
                 style={{ maxHeight: `${itemContext.dimensions.height}` }}
             >
-                <span className="title">{itemContext.title}</span>
+                <span className="title">{itemContext.title} {item.trailers[0].stateNumber}</span>
                 <span className="time">{item.start.format('HH:mm')}-{item.end.format('HH:mm')}</span>
             </div>
 
