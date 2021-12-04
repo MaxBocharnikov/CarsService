@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const path = require('path');
 
 const applicationsRoutes = require('./routes/applications');
 const clientsRouter = require('./routes/clients');
@@ -15,7 +16,7 @@ const ordersRouter = require('./routes/order');
 const userRouter = require('./routes/user');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 80;
 
 app.use(session({
     secret: 'secret key',
@@ -25,7 +26,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+res.setHeader('Access-Control-Allow-Origin', 'https://young-garden-30400.herokuapp.com/');
 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 res.setHeader('Access-Control-Allow-Headers', 'origin,X-Requested-With,accept,content-type');
 res.setHeader('Access-Control-Allow-Credentials', true);
@@ -48,9 +49,17 @@ app.use('/posts', postsRouter);
 app.use('/workingHours', workingHoursRouter);
 app.use('/users', userRouter);
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+
+    app.get('*', () => (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+    })
+}
+
 async function start() {
     try {
-        const url = 'mongodb+srv://maxbocharnikov:qwerty1234@cluster0.d9dsi.mongodb.net/carsService?retryWrites=true&w=majority';
+        const url = process.env.MONGODB_URI || 'mongodb+srv://maxbocharnikov:qwerty1234@cluster0.d9dsi.mongodb.net/carsService?retryWrites=true&w=majority';
         await mongoose.connect(url);
         app.listen(PORT, () => {
             console.log('Server has been started on port ' + PORT);
